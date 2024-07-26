@@ -7,7 +7,7 @@
 int AddStudent (int rollNumber, char* name, float CGPA, int numberOfSubjects) {
     StudentNode* newStudent = SearchStudent(rollNumber);
     if (newStudent != NULL) {
-        printf("Student %d already exists.\n", rollNumber); // change to file logs later
+        printf("Add: Student %d already exists.\n", rollNumber); // change to file logs later
         return 0;
     } else {
         newStudent = (StudentNode*) malloc(sizeof(StudentNode));
@@ -39,7 +39,16 @@ int AddStudent (int rollNumber, char* name, float CGPA, int numberOfSubjects) {
 }
 
 int ModifyStudent (int rollNumber, float CGPA) {
+    StudentNode* modifyStudent = SearchStudent(rollNumber);
+    if (modifyStudent == NULL) {
+        printf("Modify: Student %d does not exist.\n", rollNumber); // change to file logs later
+        return 0;
+    } else {
+        modifyStudent->student.CGPA = CGPA;
 
+        printf("Success: %d modified.\n", rollNumber); // change to file logs later
+        return 1;
+    }
 }
 
 int DeleteStudent (int rollNumber) {
