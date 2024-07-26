@@ -1,4 +1,4 @@
-# IDI
+# initial database
 1, aa, 8.2, 5
 560, 39
 450, 58
@@ -12,17 +12,20 @@
 3, ac, 5.9, 2
 560, 39
 450, 42
-# AS
+# add student
 4, ad, 7.9, 3
 5, ae, 7.1, 3
-# AC
+
+# add course
 4, 520, 81
 5, 560, 70
-# MS
+
+# modify stUdent
 1, 8.1
-# MC
+
+# Modify course
 5, 560, 76
-# DS
+# Delete student
 2
-# DC
+# delete course
 1, 520
