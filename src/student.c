@@ -1,4 +1,3 @@
-#include "../includes/course.h"
 #include "../includes/student.h"
 
 #include <stdio.h>
