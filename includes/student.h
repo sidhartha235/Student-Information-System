@@ -19,12 +19,12 @@ typedef struct StudentNode {
 
 extern StudentNode* studentHead;
 
-int AddStudent(int rollNumber, char* name, float CGPA, int numberOfSubjects);
+int addStudent(int rollNumber, char* name, float CGPA, int numberOfSubjects);
 
-int ModifyStudent(int rollNumber, float CGPA);
+int modifyStudent(int rollNumber, float CGPA);
 
-int DeleteStudent(int rollNumber);
+int deleteStudent(int rollNumber);
 
-StudentNode* SearchStudent(int rollNumber);
+StudentNode* searchStudent(int rollNumber);
 
 #endif

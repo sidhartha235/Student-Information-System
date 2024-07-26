@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int AddStudent (int rollNumber, char* name, float CGPA, int numberOfSubjects) {
-    StudentNode* newStudent = SearchStudent(rollNumber);
+int addStudent (int rollNumber, char* name, float CGPA, int numberOfSubjects) {
+    StudentNode* newStudent = searchStudent(rollNumber);
     if (newStudent != NULL) {
         printf("Add: Student %d already exists.\n", rollNumber); // change to file logs later
         return 0;
@@ -38,8 +38,8 @@ int AddStudent (int rollNumber, char* name, float CGPA, int numberOfSubjects) {
     }
 }
 
-int ModifyStudent (int rollNumber, float CGPA) {
-    StudentNode* modifyStudent = SearchStudent(rollNumber);
+int modifyStudent (int rollNumber, float CGPA) {
+    StudentNode* modifyStudent = searchStudent(rollNumber);
     if (modifyStudent == NULL) {
         printf("Modify: Student %d does not exist.\n", rollNumber); // change to file logs later
         return 0;
@@ -51,11 +51,37 @@ int ModifyStudent (int rollNumber, float CGPA) {
     }
 }
 
-int DeleteStudent (int rollNumber) {
+int deleteStudent (int rollNumber) {
+    StudentNode* deleteStudent = searchStudent(rollNumber);
+    if (deleteStudent == NULL) {
+        printf("Delete: Student %d does not exist.\n", rollNumber); // change to file logs later
+        return 0;
+    } else {
+        if (deleteStudent->previousStudent == NULL) {
+            if (deleteStudent->nextStudent == NULL) {
+                free(deleteStudent);
+                free(studentHead);
+                studentHead = NULL;
+            } else {
+                studentHead = deleteStudent->nextStudent;
+                studentHead->previousStudent = NULL;
+                free(deleteStudent);
+            }
+        } else if (deleteStudent->nextStudent == NULL) {
+            deleteStudent->previousStudent->nextStudent = NULL;
+            free(deleteStudent);
+        } else {
+            deleteStudent->previousStudent->nextStudent = deleteStudent->nextStudent;
+            deleteStudent->nextStudent->previousStudent = deleteStudent->previousStudent;
+            free(deleteStudent);
+        }
 
+        printf("Success: %d deleted.\n", rollNumber); // change to file logs later
+        return 1;
+    }
 }
 
-StudentNode* SearchStudent (int rollNumber) {
+StudentNode* searchStudent (int rollNumber) {
     StudentNode* temporaryStudent = studentHead;
     while (temporaryStudent != NULL) {
         if (temporaryStudent->student.rollNumber == rollNumber) {

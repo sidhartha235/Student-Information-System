@@ -12,10 +12,10 @@ typedef struct CourseNode {
     struct CourseNode* previousCourse;
 } CourseNode;
 
-int AddStudentCourse(int rollNumber, int courseCode, int marks);
+int addStudentCourse(int rollNumber, int courseCode, int marks);
 
-int ModifyStudentCourse(int rollNumber, int courseCode, int marks);
+int modifyStudentCourse(int rollNumber, int courseCode, int marks);
 
-int DeleteStudentCourse(int rollNumber, int courseCode);
+int deleteStudentCourse(int rollNumber, int courseCode);
 
 #endif

@@ -62,7 +62,7 @@ int main () {
     studentHead->nextStudent->nextStudent->previousStudent = studentHead->nextStudent;
 
     // tests
-    StudentNode* search = SearchStudent(1);
+    StudentNode* search = searchStudent(1);
     if (search == NULL) {
         printf("Student does not exist!\n");
     } else {
@@ -72,7 +72,7 @@ int main () {
 
     printf("\n");
 
-    search = SearchStudent(2);
+    search = searchStudent(2);
     if (search == NULL) {
         printf("Student does not exist!\n");
     } else {
@@ -85,7 +85,7 @@ int main () {
 
     printf("\n");
     
-    search = SearchStudent(3);
+    search = searchStudent(3);
     if (search == NULL) {
         printf("Student does not exist!\n");
     } else {
@@ -95,7 +95,7 @@ int main () {
     
     printf("\n");
 
-    search = SearchStudent(4);
+    search = searchStudent(4);
     if (search == NULL) {
         printf("Student does not exist!\n");
     } else {

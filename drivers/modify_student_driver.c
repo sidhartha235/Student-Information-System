@@ -6,15 +6,15 @@
 StudentNode* studentHead = NULL;
 
 int main () {
-    AddStudent(1, "Sid", 9.11, 5);
-    AddStudent(2, "Sri", 9.22, 6);
-    AddStudent(3, "Sam", 9.33, 4);
-    ModifyStudent(4, 9.223);
-    AddStudent(3, "Max", 9.44, 4);
-    AddStudent(4, "Max", 9.44, 4);
+    addStudent(1, "Sid", 9.11, 5);
+    addStudent(2, "Sri", 9.22, 6);
+    addStudent(3, "Sam", 9.33, 4);
+    modifyStudent(4, 9.223);
+    addStudent(3, "Max", 9.44, 4);
+    addStudent(4, "Max", 9.44, 4);
 
-    ModifyStudent(2, 9.991);
-    ModifyStudent(1, 9.012);
+    modifyStudent(2, 9.991);
+    modifyStudent(1, 9.012);
 
     StudentNode* temp = studentHead;
     while (temp != NULL) {
