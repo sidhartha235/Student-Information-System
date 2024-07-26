@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../includes/student.h"
+
+StudentNode* studentHead = NULL;
+
+int main () {
+    AddStudent(1, "Sid", 9.11, 5);
+    AddStudent(2, "Sri", 9.22, 6);
+    AddStudent(3, "Sam", 9.33, 4);
+
+    StudentNode* temp = studentHead;
+    while (temp != NULL) {
+        printf("Name: %s\n", temp->student.name);
+        printf("Roll: %d\n", temp->student.rollNumber);
+        printf("CGPA: %.2f\n", temp->student.CGPA);
+        printf("NofS: %d\n", temp->student.numberOfSubjects);
+        printf("Crss: %d\n\n", temp->student.courseHead);
+        temp = temp->nextStudent;
+    }
+
+    temp = studentHead;
+    while (temp != NULL) {
+        temp = studentHead;
+        studentHead = studentHead->nextStudent;
+        free(temp);
+    }
+
+    return 0;
+}

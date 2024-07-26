@@ -1,7 +1,7 @@
 #ifndef STUDENT_INFO
 #define STUDENT_INFO
 
-#include "../include/course.h"
+#include "../includes/course.h"
 
 typedef struct Student {
     int rollNumber;
