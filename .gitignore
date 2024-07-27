@@ -1,2 +1,5 @@
 08_19
 .vscode
+build
+*.exe
+/output
