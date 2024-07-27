@@ -4,21 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-CourseNode* searchStudentCourse (CourseNode* courseHead, int courseCode) {
-    CourseNode* temporaryCourse = courseHead;
-    while (temporaryCourse != NULL) {
-        if (temporaryCourse->course.courseCode == courseCode) {
-            return temporaryCourse;
-        }
-        temporaryCourse = temporaryCourse->nextCourse;
-    }
-    return NULL;
-}
+CourseNode* searchStudentCourse (CourseNode* courseHead, int courseCode);
 
 int addStudentCourse (int rollNumber, int courseCode, int marks) {
     StudentNode* studentNode = searchStudent(rollNumber);
     if (studentNode == NULL) {
-        printf("Add Course: Student does not exist.\n", rollNumber); // change to file logs later
+        printf("Add Course: Student %d does not exist.\n", rollNumber); // change to file logs later
         return 0;
     } else {
         CourseNode* newCourse = searchStudentCourse(studentNode->student.courseHead, courseCode);
@@ -53,9 +44,35 @@ int addStudentCourse (int rollNumber, int courseCode, int marks) {
 }
 
 int modifyStudentCourse (int rollNumber, int courseCode, int marks) {
+    StudentNode* studentNode = searchStudent(rollNumber);
+    if (studentNode == NULL) {
+        printf("Modify Course: Student %d does not exist.\n", rollNumber); // change to file logs later
+        return 0;
+    } else {
+        CourseNode* modifyCourse = searchStudentCourse(studentNode->student.courseHead, courseCode);
+        if (modifyCourse == NULL) {
+            printf("Modify: Course %d does not exist!\n", courseCode); //change to file logs later
+            return 0;
+        } else {
+            modifyCourse->course.marks = marks;
 
+            printf("Success: Course %d modified!\n", courseCode);
+            return 1;
+        }
+    }
 }
 
 int deleteStudentCourse (int rollNumber, int courseCode) {
 
+}
+
+CourseNode* searchStudentCourse (CourseNode* courseHead, int courseCode) {
+    CourseNode* temporaryCourse = courseHead;
+    while (temporaryCourse != NULL) {
+        if (temporaryCourse->course.courseCode == courseCode) {
+            return temporaryCourse;
+        }
+        temporaryCourse = temporaryCourse->nextCourse;
+    }
+    return NULL;
 }
