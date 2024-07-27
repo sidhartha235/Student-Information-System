@@ -1,8 +1,9 @@
 #include <stdio.h>
 
-#include "../includes/writer.h"
+#include "writer.h"
 
-int main () {
+int main()
+{
     appendToFile("a, 2.3, sid, sri", "test.out");
     appendToFile("a, 2.3, sid, sri", "test.out");
     appendToFile("a, 2.3, sid, sri", "test.out");

@@ -1,30 +1,32 @@
 #ifndef STUDENT_INFO
 #define STUDENT_INFO
 
-#include "../includes/course.h"
+#include "course.h"
 
-typedef struct Student {
+typedef struct Student
+{
     int rollNumber;
-    char* name;
+    char *name;
     float CGPA;
     int numberOfSubjects;
-    CourseNode* courseHead;
+    CourseNode *courseHead;
 } Student;
 
-typedef struct StudentNode {
+typedef struct StudentNode
+{
     Student student;
-    struct StudentNode* nextStudent;
-    struct StudentNode* previousStudent;
+    struct StudentNode *nextStudent;
+    struct StudentNode *previousStudent;
 } StudentNode;
 
-extern StudentNode* studentHead;
+extern StudentNode *studentHead;
 
-int addStudent(int rollNumber, char* name, float CGPA, int numberOfSubjects);
+int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects);
 
 int modifyStudent(int rollNumber, float CGPA);
 
 int deleteStudent(int rollNumber);
 
-StudentNode* searchStudent(int rollNumber);
+StudentNode *searchStudent(int rollNumber);
 
 #endif

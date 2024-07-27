@@ -1,0 +1,31 @@
+# initial database
+1, aa, 8.2, 5
+560, 39
+450, 58
+620, 76
+470, 49
+520, 78
+2, ab, 6.7, 3
+560, 45
+450, 50
+620, 60
+3, ac, 5.9, 2
+560, 39
+450, 42
+# add student
+4, ad, 7.9, 0
+5, ae, 7.1, 0
+
+# add course
+4, 520, 81
+5, 560, 70
+
+# modify stUdent
+1, 8.1
+
+# Modify course
+5, 560, 76
+# Delete student
+2
+# delete course
+1, 520
