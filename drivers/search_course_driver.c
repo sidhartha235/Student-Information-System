@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../includes/student.h"
-#include "../includes/course.h"
+#include "student.h"
+#include "course.h"
 
 // NOTE: to test SearchCourse functionality, add function definition in course.h temporarily
 

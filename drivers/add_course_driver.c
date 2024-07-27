@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../includes/student.h"
-#include "../includes/course.h"
+#include "student.h"
+#include "course.h"
 
-StudentNode* studentHead = NULL;
+StudentNode *studentHead = NULL;
 
-int main () {
+int main()
+{
     addStudent(1, "Sid", 9.11, 5);
     addStudentCourse(2, 101, 98);
     addStudentCourse(2, 102, 78);
@@ -33,14 +34,16 @@ int main () {
     addStudentCourse(2, 352, 78);
     addStudentCourse(2, 152, 98);
 
-    StudentNode* studentNode = studentHead;
-    while (studentNode != NULL) {
+    StudentNode *studentNode = studentHead;
+    while (studentNode != NULL)
+    {
         printf("Name: %s\n", studentNode->student.name);
         printf("Roll: %d\n", studentNode->student.rollNumber);
         printf("CGPA: %.2f\n", studentNode->student.CGPA);
         printf("NofS: %d\n", studentNode->student.numberOfSubjects);
-        CourseNode* courseNode = studentNode->student.courseHead;
-        while (courseNode != NULL) {
+        CourseNode *courseNode = studentNode->student.courseHead;
+        while (courseNode != NULL)
+        {
             printf("Code: %d\n", courseNode->course.courseCode);
             printf("Mark: %d\n", courseNode->course.marks);
             courseNode = courseNode->nextCourse;
@@ -50,7 +53,8 @@ int main () {
     }
 
     studentNode = studentHead;
-    while (studentNode != NULL) {
+    while (studentNode != NULL)
+    {
         studentNode = studentHead;
         studentHead = studentHead->nextStudent;
         free(studentNode);

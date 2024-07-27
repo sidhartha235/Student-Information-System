@@ -1,28 +1,36 @@
-#include "../includes/course.h"
-#include "../includes/student.h"
-#include "../includes/writer.h"
+#include "course.h"
+#include "student.h"
+#include "writer.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-CourseNode* searchStudentCourse(CourseNode* courseHead, int courseCode);
-char logMessage[200];
+CourseNode *searchStudentCourse(CourseNode *courseHead, int courseCode);
+extern char logMessage[200];
 
-int addStudentCourse (int rollNumber, int courseCode, int marks) {
-    StudentNode* studentNode = searchStudent(rollNumber);
-    if (studentNode == NULL) {
+int addStudentCourse(int rollNumber, int courseCode, int marks)
+{
+    StudentNode *studentNode = searchStudent(rollNumber);
+    if (studentNode == NULL)
+    {
         sprintf(logMessage, "Error in AddCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         appendToFile(logMessage, "logs.txt");
         return 0;
-    } else {
-        CourseNode* newCourse = searchStudentCourse(studentNode->student.courseHead, courseCode);
-        if (newCourse != NULL) {
+    }
+    else
+    {
+        CourseNode *newCourse = searchStudentCourse(studentNode->student.courseHead, courseCode);
+        if (newCourse != NULL)
+        {
             sprintf(logMessage, "Error in AddCourse: Course (%d) already exists for Roll Number (%d)\n", courseCode, rollNumber);
             appendToFile(logMessage, "logs.txt");
             return 0;
-        } else {
-            newCourse = (CourseNode*) malloc(sizeof(CourseNode));
-            if (newCourse == NULL) {
+        }
+        else
+        {
+            newCourse = (CourseNode *)malloc(sizeof(CourseNode));
+            if (newCourse == NULL)
+            {
                 printf("Failed to allocate memory while adding new course!\n");
                 exit(1);
             }
@@ -33,7 +41,10 @@ int addStudentCourse (int rollNumber, int courseCode, int marks) {
             newCourse->nextCourse = NULL;
             newCourse->previousCourse = NULL;
 
-            if (studentNode->student.courseHead != NULL) {
+            studentNode->student.numberOfSubjects++;
+
+            if (studentNode->student.courseHead != NULL)
+            {
                 newCourse->nextCourse = studentNode->student.courseHead;
                 studentNode->student.courseHead->previousCourse = newCourse;
             }
@@ -46,19 +57,26 @@ int addStudentCourse (int rollNumber, int courseCode, int marks) {
     }
 }
 
-int modifyStudentCourse (int rollNumber, int courseCode, int marks) {
-    StudentNode* studentNode = searchStudent(rollNumber);
-    if (studentNode == NULL) {
+int modifyStudentCourse(int rollNumber, int courseCode, int marks)
+{
+    StudentNode *studentNode = searchStudent(rollNumber);
+    if (studentNode == NULL)
+    {
         sprintf(logMessage, "Error in ModifyCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         appendToFile(logMessage, "logs.txt");
         return 0;
-    } else {
-        CourseNode* modifyCourse = searchStudentCourse(studentNode->student.courseHead, courseCode);
-        if (modifyCourse == NULL) {
+    }
+    else
+    {
+        CourseNode *modifyCourse = searchStudentCourse(studentNode->student.courseHead, courseCode);
+        if (modifyCourse == NULL)
+        {
             sprintf(logMessage, "Error in ModifyCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
             appendToFile(logMessage, "logs.txt");
             return 0;
-        } else {
+        }
+        else
+        {
             modifyCourse->course.marks = marks;
 
             sprintf(logMessage, "Success: Course Modified -> Roll Number - %d -- Course Code - %d\n", rollNumber, courseCode);
@@ -68,31 +86,45 @@ int modifyStudentCourse (int rollNumber, int courseCode, int marks) {
     }
 }
 
-int deleteStudentCourse (int rollNumber, int courseCode) {
-    StudentNode* studentNode = searchStudent(rollNumber);
-    if (studentNode == NULL) {
+int deleteStudentCourse(int rollNumber, int courseCode)
+{
+    StudentNode *studentNode = searchStudent(rollNumber);
+    if (studentNode == NULL)
+    {
         sprintf(logMessage, "Error in DeleteCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         appendToFile(logMessage, "logs.txt");
         return 0;
-    } else {
-        CourseNode* deleteCourse = searchStudentCourse(studentNode->student.courseHead, courseCode);
-        if (deleteCourse == NULL) {
+    }
+    else
+    {
+        CourseNode *deleteCourse = searchStudentCourse(studentNode->student.courseHead, courseCode);
+        if (deleteCourse == NULL)
+        {
             sprintf(logMessage, "Error in ModifyCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
             appendToFile(logMessage, "logs.txt");
             return 0;
-        } else {
-            if (deleteCourse->previousCourse == NULL) {
+        }
+        else
+        {
+            if (deleteCourse->previousCourse == NULL)
+            {
                 studentNode->student.courseHead = deleteCourse->nextCourse;
-                if (studentNode->student.courseHead != NULL) {
+                if (studentNode->student.courseHead != NULL)
+                {
                     studentNode->student.courseHead->previousCourse = NULL;
                 }
-            } else {
+            }
+            else
+            {
                 deleteCourse->previousCourse->nextCourse = deleteCourse->nextCourse;
             }
 
-            if (deleteCourse->nextCourse != NULL) {
+            if (deleteCourse->nextCourse != NULL)
+            {
                 deleteCourse->nextCourse->previousCourse = deleteCourse->previousCourse;
             }
+
+            studentNode->student.numberOfSubjects--;
 
             free(deleteCourse);
             sprintf(logMessage, "Success: Course Deleted -> Roll Number - %d -- Course Code - %d\n", rollNumber, courseCode);
@@ -102,10 +134,13 @@ int deleteStudentCourse (int rollNumber, int courseCode) {
     }
 }
 
-CourseNode* searchStudentCourse (CourseNode* courseHead, int courseCode) {
-    CourseNode* temporaryCourse = courseHead;
-    while (temporaryCourse != NULL) {
-        if (temporaryCourse->course.courseCode == courseCode) {
+CourseNode *searchStudentCourse(CourseNode *courseHead, int courseCode)
+{
+    CourseNode *temporaryCourse = courseHead;
+    while (temporaryCourse != NULL)
+    {
+        if (temporaryCourse->course.courseCode == courseCode)
+        {
             return temporaryCourse;
         }
         temporaryCourse = temporaryCourse->nextCourse;

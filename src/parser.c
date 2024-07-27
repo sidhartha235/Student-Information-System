@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "student_stub.h"
+#include "student.h"
+#include "course.h"
 
 #define MAX 100
 
@@ -20,9 +21,8 @@ void parseDeleteCourse(char *line);
 void initParse(char *filename)
 {
     FILE *fp = openFile(filename);
-
     char line[MAX];
-    char *callType;
+    char *callType = NULL;
 
     while (fgets(line, MAX, fp) != NULL)
     {
@@ -31,6 +31,9 @@ void initParse(char *filename)
             char ch = line[0];
             if (ch == '#')
             {
+                if(callType != NULL){
+                    free(callType);
+                }
                 int len = strlen(line);
                 callType = (char *)malloc(len);
                 if (callType == NULL)
@@ -98,7 +101,7 @@ void initDBInfo(char* line,FILE* filePointer){
             int courseCode;
             int marks;
             int result = sscanf(line,"%d, %d", &courseCode, &marks);
-            addCourse(rollNumber, courseCode, marks);
+            addStudentCourse(rollNumber, courseCode, marks);
             index++;
         }
     }
@@ -118,7 +121,7 @@ void parseAddCourse(char* line){
     int courseCode;
     int marks;
     int result = sscanf(line, "%d, %d, %d", &rollNumber, &courseCode, &marks);
-    addCourse(rollNumber, courseCode, marks);
+    addStudentCourse(rollNumber, courseCode, marks);
 }
 
 void parseModifyStudent(char* line){
@@ -133,7 +136,7 @@ void parseModifyCourse(char* line){
     int courseCode;
     int marks;
     int result = sscanf(line,"%d, %d, %d", &rollNumber, &courseCode, &marks);
-    modifyCourse(rollNumber, courseCode, marks);
+    modifyStudentCourse(rollNumber, courseCode, marks);
 }
 
 
@@ -147,7 +150,7 @@ void parseDeleteCourse(char* line){
     int rollNumber;
     int courseCode;
     int result = sscanf(line,"%d, %d", &rollNumber, &courseCode);
-    deleteCourse(rollNumber, courseCode);
+    deleteStudentCourse(rollNumber, courseCode);
 }
 
 FILE *openFile(char *filename)
