@@ -7,7 +7,7 @@ fi
 
 command_args=("$@")
 
-gcc -o 08_19 src/*.c -I./includes -lrt
+gcc -o 08_19 src/*.c stubs/*.c -I./includes -lrt
 
 if [ $? -eq 0 ]; then
     echo "Compilation Successful"

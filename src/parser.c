@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX 20
+#include "student_stub.h"
+
+#define MAX 100
 
 FILE *openFile(char *filename);
 void closeFile(FILE *fp);
@@ -30,7 +32,6 @@ void initParse(char *filename)
             if (ch == '#')
             {
                 int len = strlen(line);
-                printf("%d\n", len);
                 callType = (char *)malloc(len);
                 if (callType == NULL)
                 {
@@ -89,7 +90,7 @@ void initDBInfo(char* line,FILE* filePointer){
     float CGPA;
     int numSubjects;
     int result = sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects);
-    printf("%d %s %f %d\n", rollNumber, name, CGPA, numSubjects);
+    addStudent(rollNumber, name, CGPA, numSubjects);
     int index = 0;
     while (index < numSubjects && (line = fgets(line, MAX, filePointer)))
     {
@@ -97,7 +98,7 @@ void initDBInfo(char* line,FILE* filePointer){
             int courseCode;
             int marks;
             int result = sscanf(line,"%d, %d", &courseCode, &marks);
-            printf("%d %d\n", courseCode, marks);
+            addCourse(rollNumber, courseCode, marks);
             index++;
         }
     }
@@ -109,7 +110,7 @@ void parseAddStudent(char* line){
     float CGPA;
     int numSubjects;
     int result = sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects);
-    printf("%d %s %f %d\n", rollNumber, name, CGPA, numSubjects);
+    addStudent(rollNumber, name, CGPA, numSubjects);
 }
 
 void parseAddCourse(char* line){
@@ -117,14 +118,14 @@ void parseAddCourse(char* line){
     int courseCode;
     int marks;
     int result = sscanf(line, "%d, %d, %d", &rollNumber, &courseCode, &marks);
-    printf("%d %d %d\n", rollNumber, courseCode, marks);
+    addCourse(rollNumber, courseCode, marks);
 }
 
 void parseModifyStudent(char* line){
     int rollNumber;
     float CGPA;
     int result = sscanf(line,"%d, %f",&rollNumber, &CGPA);
-    printf("%d %f\n", rollNumber, CGPA);
+    modifyStudent(rollNumber, CGPA);
 }
 
 void parseModifyCourse(char* line){
@@ -132,21 +133,21 @@ void parseModifyCourse(char* line){
     int courseCode;
     int marks;
     int result = sscanf(line,"%d, %d, %d", &rollNumber, &courseCode, &marks);
-    printf("%d %d %d\n", rollNumber, courseCode, marks);
+    modifyCourse(rollNumber, courseCode, marks);
 }
 
 
 void parseDeleteStudent(char* line){
     int rollNumber;
     int result = sscanf(line,"%d", &rollNumber);
-    printf("%d\n", rollNumber);
+    deleteStudent(rollNumber);
 }
 
 void parseDeleteCourse(char* line){
     int rollNumber;
     int courseCode;
     int result = sscanf(line,"%d, %d", &rollNumber, &courseCode);
-    printf("%d %d\n", rollNumber, courseCode);
+    deleteCourse(rollNumber, courseCode);
 }
 
 FILE *openFile(char *filename)
