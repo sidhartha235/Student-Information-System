@@ -1,12 +1,16 @@
 #include "../includes/student.h"
+#include "../includes/writer.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
+char logMessage[200];
+
 int addStudent (int rollNumber, char* name, float CGPA, int numberOfSubjects) {
     StudentNode* newStudent = searchStudent(rollNumber);
     if (newStudent != NULL) {
-        printf("Add: Student %d already exists.\n", rollNumber); // change to file logs later
+        sprintf(logMessage, "Error in AddStudent: Student already exists with Roll Number (%d)\n", rollNumber);
+        appendToFile(logMessage, "logs.txt");
         return 0;
     } else {
         newStudent = (StudentNode*) malloc(sizeof(StudentNode));
@@ -30,28 +34,34 @@ int addStudent (int rollNumber, char* name, float CGPA, int numberOfSubjects) {
         }
         studentHead = newStudent;
 
-        printf("Success: %d added.\n", rollNumber); // change to file logs later
+        sprintf(logMessage, "Success: Student Added -> Roll Number - %d\n", rollNumber);
+        appendToFile(logMessage, "logs.txt");
         return 1;
     }
 }
 
 int modifyStudent (int rollNumber, float CGPA) {
     StudentNode* modifyStudent = searchStudent(rollNumber);
+    char logMessage[100];
     if (modifyStudent == NULL) {
-        printf("Modify: Student %d does not exist.\n", rollNumber); // change to file logs later
+        sprintf(logMessage, "Error in ModifyStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
+        appendToFile(logMessage, "logs.txt");
         return 0;
     } else {
         modifyStudent->student.CGPA = CGPA;
 
-        printf("Success: %d modified.\n", rollNumber); // change to file logs later
+        sprintf(logMessage, "Success: Student Modified -> Roll Number - %d\n", rollNumber);
+        appendToFile(logMessage, "logs.txt");
         return 1;
     }
 }
 
 int deleteStudent (int rollNumber) {
     StudentNode* deleteStudent = searchStudent(rollNumber);
+    char logMessage[100];
     if (deleteStudent == NULL) {
-        printf("Delete: Student %d does not exist.\n", rollNumber); // change to file logs later
+        sprintf(logMessage, "Error in DeleteStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
+        appendToFile(logMessage, "logs.txt");
         return 0;
     } else {
         if (deleteStudent->previousStudent == NULL) {
@@ -68,7 +78,8 @@ int deleteStudent (int rollNumber) {
         }
 
         free(deleteStudent);
-        printf("Success: %d deleted.\n", rollNumber); // change to file logs later
+        sprintf(logMessage, "Success: Student Deleted -> Roll Number - %d\n", rollNumber);
+        appendToFile(logMessage, "logs.txt");
         return 1;
     }
 }
