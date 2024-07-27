@@ -27,10 +27,8 @@ int addStudent (int rollNumber, char* name, float CGPA, int numberOfSubjects) {
         if (studentHead != NULL) {
             newStudent->nextStudent = studentHead;
             studentHead->previousStudent = newStudent;
-            studentHead = newStudent;
-        } else {
-            studentHead = newStudent;
         }
+        studentHead = newStudent;
 
         printf("Success: %d added.\n", rollNumber); // change to file logs later
         return 1;
@@ -57,24 +55,19 @@ int deleteStudent (int rollNumber) {
         return 0;
     } else {
         if (deleteStudent->previousStudent == NULL) {
-            if (deleteStudent->nextStudent == NULL) {
-                free(deleteStudent);
-                free(studentHead);
-                studentHead = NULL;
-            } else {
-                studentHead = deleteStudent->nextStudent;
+            studentHead = deleteStudent->nextStudent;
+            if (studentHead != NULL) {
                 studentHead->previousStudent = NULL;
-                free(deleteStudent);
             }
-        } else if (deleteStudent->nextStudent == NULL) {
-            deleteStudent->previousStudent->nextStudent = NULL;
-            free(deleteStudent);
         } else {
             deleteStudent->previousStudent->nextStudent = deleteStudent->nextStudent;
+        }
+        
+        if (deleteStudent->nextStudent != NULL) {
             deleteStudent->nextStudent->previousStudent = deleteStudent->previousStudent;
-            free(deleteStudent);
         }
 
+        free(deleteStudent);
         printf("Success: %d deleted.\n", rollNumber); // change to file logs later
         return 1;
     }

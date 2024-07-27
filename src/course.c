@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-CourseNode* searchStudentCourse (CourseNode* courseHead, int courseCode);
+CourseNode* searchStudentCourse(CourseNode* courseHead, int courseCode);
 
 int addStudentCourse (int rollNumber, int courseCode, int marks) {
     StudentNode* studentNode = searchStudent(rollNumber);
@@ -32,10 +32,8 @@ int addStudentCourse (int rollNumber, int courseCode, int marks) {
             if (studentNode->student.courseHead != NULL) {
                 newCourse->nextCourse = studentNode->student.courseHead;
                 studentNode->student.courseHead->previousCourse = newCourse;
-                studentNode->student.courseHead = newCourse;
-            } else {
-                studentNode->student.courseHead = newCourse;
             }
+            studentNode->student.courseHead = newCourse;
 
             printf("Success: %d added for %d.\n", courseCode, rollNumber);
             return 1;
@@ -63,7 +61,34 @@ int modifyStudentCourse (int rollNumber, int courseCode, int marks) {
 }
 
 int deleteStudentCourse (int rollNumber, int courseCode) {
+    StudentNode* studentNode = searchStudent(rollNumber);
+    if (studentNode == NULL) {
+        printf("Delete Course: Student %d does not exist.\n", rollNumber); // change to file logs later
+        return 0;
+    } else {
+        CourseNode* deleteCourse = searchStudentCourse(studentNode->student.courseHead, courseCode);
+        if (deleteCourse == NULL) {
+            printf("Delete: Course %d does not exist!\n", courseCode); // change to file logs later
+            return 0;
+        } else {
+            if (deleteCourse->previousCourse == NULL) {
+                studentNode->student.courseHead = deleteCourse->nextCourse;
+                if (studentNode->student.courseHead != NULL) {
+                    studentNode->student.courseHead->previousCourse = NULL;
+                }
+            } else {
+                deleteCourse->previousCourse->nextCourse = deleteCourse->nextCourse;
+            }
 
+            if (deleteCourse->nextCourse != NULL) {
+                deleteCourse->nextCourse->previousCourse = deleteCourse->previousCourse;
+            }
+
+            free(deleteCourse);
+            printf("Success: Course %d deleted.\n", courseCode); // change to file logs later
+            return 1;
+        }
+    }
 }
 
 CourseNode* searchStudentCourse (CourseNode* courseHead, int courseCode) {
