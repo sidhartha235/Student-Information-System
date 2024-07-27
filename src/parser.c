@@ -42,7 +42,7 @@ void initParse(char *filename)
                     exit(1);
                 }
                 strncpy(callType, line + 2, len - 3);
-                callType[len] = '\0';
+                callType[len - 3] = '\0';
             }
             else
             {
@@ -76,7 +76,7 @@ void initParse(char *filename)
                 }
                 else
                 {
-                    fprintf(stderr, "Incorrect Input file");
+                    fprintf(stderr, "Incorrect Input file\n");
                     exit(1);
                 }
             }

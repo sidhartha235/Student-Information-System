@@ -21,7 +21,7 @@ int appendToFile(char *line, char *fileName)
 
     FILE *filePointer;
     static int firstWrite = 0;
-    if (strcmp(fileName, "08_19.output") == 0 && firstWrite == 0)
+    if (strcmp(fileName, "08_19.out") == 0 && firstWrite == 0)
     {
         filePointer = fopen(path, "w");
         firstWrite = 1;
