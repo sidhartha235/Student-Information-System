@@ -1,7 +1,12 @@
 #!/bin/bash
 
 if [ $# -lt 2 ]; then
-    echo "Usage: ./run.sh <commnad>"
+    echo "Usage: ./run.sh -input <input_file_name>"
+    exit 1
+fi
+
+if [ "$1" != "-input" ]; then
+    echo "Usage: ./run.sh -input <input_file_name>"
     exit 1
 fi
 
