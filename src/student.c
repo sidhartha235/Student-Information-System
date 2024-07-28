@@ -20,7 +20,7 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
         newStudent = (StudentNode *)malloc(sizeof(StudentNode));
         if (newStudent == NULL)
         {
-            printf("Failed to allocate memory while adding new student!\n");
+            fprintf(stderr, "Failed to allocate memory while adding new student!\n");
             exit(1);
         }
 

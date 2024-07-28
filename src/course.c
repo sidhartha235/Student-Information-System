@@ -31,7 +31,7 @@ int addStudentCourse(int rollNumber, int courseCode, int marks)
             newCourse = (CourseNode *)malloc(sizeof(CourseNode));
             if (newCourse == NULL)
             {
-                printf("Failed to allocate memory while adding new course!\n");
+                fprintf(stderr, "Failed to allocate memory while adding new course!\n");
                 exit(1);
             }
 

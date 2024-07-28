@@ -1,6 +1,7 @@
-# Server of Student Information System
+# Student Information System
 
 ## Modules:
+### Parser
 ### Student
 ### Course
 ### Writer

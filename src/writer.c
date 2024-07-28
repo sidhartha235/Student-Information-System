@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "writer.h"
 #include "student.h"
@@ -15,6 +16,9 @@ int appendToFile(char *line, char *fileName)
 {
     char path[100];
     char *directory = "output/";
+    time_t currentTime;
+    struct tm* localTime;
+    char dateTime[100];
 
     strcpy(path, directory);
     strcat(path, fileName);
@@ -29,19 +33,26 @@ int appendToFile(char *line, char *fileName)
     else
     {
         filePointer = fopen(path, "a");
+        if (strcmp(fileName, "logs.txt") == 0) {
+            currentTime = time(NULL);
+            localTime = localtime(&currentTime);
+            sprintf(dateTime, "[%02d-%02d-%d %02d:%02d:%02d]\t", localTime->tm_mday, localTime->tm_mon + 1, localTime->tm_year + 1900, localTime->tm_hour, localTime->tm_min, localTime->tm_sec);
+            strcat(dateTime, line);
+            strcpy(line, dateTime);
+        }
     }
 
     if (filePointer == NULL)
     {
-        printf("Failed to open the file: %s\n", path);
-        return 0;
+        fprintf(stderr, "Failed to open the file: %s\n", path);
+        exit(1);
     }
 
     if (fprintf(filePointer, "%s\n", line) < 0)
     {
-        printf("Failed to write to the file: %s\n", path);
+        fprintf(stderr, "Failed to write to the file: %s\n", path);
         fclose(filePointer);
-        return 0;
+        exit(1);
     }
 
     fclose(filePointer);
