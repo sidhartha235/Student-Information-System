@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern char logMessage[200];
+StudentNode *studentHead = NULL;
+char logMessage[200];
 
 int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
 {

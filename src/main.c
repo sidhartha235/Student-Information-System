@@ -6,9 +6,6 @@
 #include "student.h"
 #include "writer.h"
 
-StudentNode *studentHead = NULL;
-char logMessage[200];
-
 int main(int argc,char* argv[]){
     char *inputFile = (char*)malloc(strlen(argv[2]) + 1);
     char *outputFile = "08_19.out";
