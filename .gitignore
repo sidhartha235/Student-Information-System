@@ -1,5 +1,7 @@
-08_19
+2108_2119
 .vscode
 build
 *.exe
 /output
+*.out
+logs.txt

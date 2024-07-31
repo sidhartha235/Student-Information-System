@@ -12,11 +12,11 @@ fi
 
 command_args=("$@")
 
-gcc -o 08_19 src/*.c -I./includes
+gcc -o 2108_2119 src/*.c -I./includes
 
 if [ $? -eq 0 ]; then
     echo "Compilation Successful"
-    ./08_19 "${command_args[@]}"
+    ./2108_2119 "${command_args[@]}"
 else
     echo "Compilation Failed"
 fi

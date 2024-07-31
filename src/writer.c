@@ -15,9 +15,9 @@ void writeCourse(CourseNode *courseNode, char *fileName);
 int appendToFile(char *line, char *fileName)
 {
     char path[100];
-    char *directory = "output/";
+    char *directory = "";
     time_t currentTime;
-    struct tm* localTime;
+    struct tm *localTime;
     char dateTime[100];
 
     strcpy(path, directory);
@@ -25,7 +25,7 @@ int appendToFile(char *line, char *fileName)
 
     FILE *filePointer;
     static int firstWrite = 0;
-    if (strcmp(fileName, "08_19.out") == 0 && firstWrite == 0)
+    if (strcmp(fileName, "2108_2119.out") == 0 && firstWrite == 0)
     {
         filePointer = fopen(path, "w");
         firstWrite = 1;
@@ -33,7 +33,8 @@ int appendToFile(char *line, char *fileName)
     else
     {
         filePointer = fopen(path, "a");
-        if (strcmp(fileName, "logs.txt") == 0) {
+        if (strcmp(fileName, "logs.txt") == 0)
+        {
             currentTime = time(NULL);
             localTime = localtime(&currentTime);
             sprintf(dateTime, "[%02d-%02d-%d %02d:%02d:%02d]\t", localTime->tm_mday, localTime->tm_mon + 1, localTime->tm_year + 1900, localTime->tm_hour, localTime->tm_min, localTime->tm_sec);

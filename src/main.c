@@ -6,9 +6,10 @@
 #include "student.h"
 #include "writer.h"
 
-int main(int argc,char* argv[]){
-    char *inputFile = (char*)malloc(strlen(argv[2]) + 1);
-    char *outputFile = "08_19.out";
+int main(int argc, char *argv[])
+{
+    char *inputFile = (char *)malloc(strlen(argv[2]) + 1);
+    char *outputFile = "2108_2119.out";
     if (inputFile == NULL)
     {
         fprintf(stderr, "Memory allocation failed\n");
