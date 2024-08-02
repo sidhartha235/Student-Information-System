@@ -14,7 +14,7 @@
 450, 42
 # add student
 4, Bruno, 7.9, 0
-3, James Bond, 5.9, 2
+3, James Bond, 5.9, 0
 5, Steve Richard, 7.1, 0
 
 # add course
