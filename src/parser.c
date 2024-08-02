@@ -92,7 +92,7 @@ void initDBInfo(char* line,FILE* filePointer){
     char* name = (char*)malloc(MAX);
     float CGPA;
     int numSubjects;
-    int result = sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects);
+    sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects);
     addStudent(rollNumber, name, CGPA, numSubjects);
     int index = 0;
     while (index < numSubjects && (line = fgets(line, MAX, filePointer)))
@@ -100,7 +100,7 @@ void initDBInfo(char* line,FILE* filePointer){
         if (sscanf(line,"%*c") != EOF){
             int courseCode;
             int marks;
-            int result = sscanf(line,"%d, %d", &courseCode, &marks);
+            sscanf(line,"%d, %d", &courseCode, &marks);
             addStudentCourse(rollNumber, courseCode, marks);
             index++;
         }
@@ -112,7 +112,7 @@ void parseAddStudent(char* line){
     char *name = (char *)malloc(MAX);
     float CGPA;
     int numSubjects;
-    int result = sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects);
+    sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects);
     addStudent(rollNumber, name, CGPA, numSubjects);
 }
 
@@ -120,14 +120,14 @@ void parseAddCourse(char* line){
     int rollNumber;
     int courseCode;
     int marks;
-    int result = sscanf(line, "%d, %d, %d", &rollNumber, &courseCode, &marks);
+    sscanf(line, "%d, %d, %d", &rollNumber, &courseCode, &marks);
     addStudentCourse(rollNumber, courseCode, marks);
 }
 
 void parseModifyStudent(char* line){
     int rollNumber;
     float CGPA;
-    int result = sscanf(line,"%d, %f",&rollNumber, &CGPA);
+    sscanf(line,"%d, %f",&rollNumber, &CGPA);
     modifyStudent(rollNumber, CGPA);
 }
 
@@ -135,21 +135,21 @@ void parseModifyCourse(char* line){
     int rollNumber;
     int courseCode;
     int marks;
-    int result = sscanf(line,"%d, %d, %d", &rollNumber, &courseCode, &marks);
+    sscanf(line,"%d, %d, %d", &rollNumber, &courseCode, &marks);
     modifyStudentCourse(rollNumber, courseCode, marks);
 }
 
 
 void parseDeleteStudent(char* line){
     int rollNumber;
-    int result = sscanf(line,"%d", &rollNumber);
+    sscanf(line,"%d", &rollNumber);
     deleteStudent(rollNumber);
 }
 
 void parseDeleteCourse(char* line){
     int rollNumber;
     int courseCode;
-    int result = sscanf(line,"%d, %d", &rollNumber, &courseCode);
+    sscanf(line,"%d, %d", &rollNumber, &courseCode);
     deleteStudentCourse(rollNumber, courseCode);
 }
 

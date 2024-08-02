@@ -11,7 +11,7 @@
 
 <ul>
     <li>Student as well as respective Courses Information into a CSV file <strong>'2108_2119.out'</strong>.</li>
-    <li>You can check the end of the file 'output/logs.txt' to check if any errors or inconsistency is present in the Input file.</li>
+    <li>You can check the end of the file 'logs.txt' to check if any errors or inconsistency is present in the Input file.</li>
 </ul>
 
 ## Execution Steps using shell script:
@@ -33,9 +33,22 @@ make
 
 
 Run the executable using the following commnad:
-```
+
+### Windows
+
+.\2108_2119.exe -input <input_file>
+
+
+For example to run with filename <b>input.txt</b>
+
+.\2108_2119.exe -input input.txt
+
+
+### Linux
+
 ./2108_2119 -input <input_file>
-```
+
+
 
 ## Modules:
 

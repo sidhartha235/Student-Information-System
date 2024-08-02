@@ -12,6 +12,7 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
     StudentNode *newStudent = searchStudent(rollNumber);
     if (newStudent != NULL)
     {
+        fprintf(stderr, "Error in AddStudent: Student already exists with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in AddStudent: Student already exists with Roll Number (%d)\n", rollNumber);
         appendToFile(logMessage, "logs.txt");
         return 0;
@@ -53,6 +54,7 @@ int modifyStudent(int rollNumber, float CGPA)
     char logMessage[100];
     if (modifyStudent == NULL)
     {
+        fprintf(stderr, "Error in ModifyStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in ModifyStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         appendToFile(logMessage, "logs.txt");
         return 0;
@@ -73,6 +75,7 @@ int deleteStudent(int rollNumber)
     char logMessage[100];
     if (deleteStudent == NULL)
     {
+        fprintf(stderr, "Error in DeleteStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in DeleteStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         appendToFile(logMessage, "logs.txt");
         return 0;

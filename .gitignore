@@ -5,3 +5,4 @@ build
 /output
 *.out
 logs.txt
+*.o

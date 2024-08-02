@@ -74,12 +74,11 @@ void initWrite(char *fileName)
         studentNode = studentNode->previousStudent;
     }
 
-    printf("Successfully written to the file: output/%s\n", fileName);
+    printf("Successfully written to the file: %s\n", fileName);
 }
 
 void writeStudent(StudentNode *studentNode, char *fileName)
 {
-    int numSubjects = studentNode->student.numberOfSubjects;
     sprintf(buffer, "%d, %s, %.2f, %d", studentNode->student.rollNumber, studentNode->student.name, studentNode->student.CGPA, studentNode->student.numberOfSubjects);
     appendToFile(buffer, fileName);
     CourseNode *courseNode = studentNode->student.courseHead;
