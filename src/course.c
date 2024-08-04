@@ -105,8 +105,8 @@ int deleteStudentCourse(int rollNumber, int courseCode)
         CourseNode *deleteCourse = searchStudentCourse(studentNode->student.courseHead, courseCode);
         if (deleteCourse == NULL)
         {
-            fprintf(stderr, "Error in ModifyCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
-            sprintf(logMessage, "Error in ModifyCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
+            fprintf(stderr, "Error in DeleteCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
+            sprintf(logMessage, "Error in DeleteCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
             appendToFile(logMessage, "logs.txt");
             return 0;
         }
