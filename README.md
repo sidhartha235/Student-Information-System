@@ -17,6 +17,7 @@
 ## Execution Steps:
 
 Run the makefile using the following command:
+
 ```
 make
 ```
@@ -24,26 +25,26 @@ make
 Open 2 terminals in the project's directory.
 
 Run the following to start the server process:
+
 ```
 ./server_08_19 <SERV_PORT>
 ```
 
 Run the following to start the client process:
+
 ```
-./client_08_19 <SERV_IP_ADDR> <SERV_PORT> -input <input_file>
+./client_08_19 -input <input_file> -addr <SERV_ADDR> -port <SERV_PORT>
 ```
 
 ## Handling SIGPIPE
 
 When the client encounters a SIGPIPE it retries to write into the FIFO for MAX_RETRIES with RETRY_DELAY between each new write defined in client.c.
 
-
 ![Image](images/1.png)
 
 To reproduce make the following line changes in server.c
 
 ![Image](images/2.png)
-
 
 ## Modules:
 

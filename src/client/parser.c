@@ -83,7 +83,6 @@ void initParse(char *filename)
     }
 
     free(callType);
-    endConnection();
     closeFile(fp);
 }
 

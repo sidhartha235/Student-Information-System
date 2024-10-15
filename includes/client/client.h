@@ -4,6 +4,5 @@ int deleteStudent(int rollNumber);
 int addStudentCourse(int rollNumber, int courseCode, int marks);
 int modifyStudentCourse(int rollNumber, int courseCode, int marks);
 int deleteStudentCourse(int rollNumber, int courseCode);
-int endConnection();
-int openFifo();
-void closeFifo();
+int openConnection();
+void closeConnection();

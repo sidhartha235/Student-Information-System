@@ -3,11 +3,12 @@
 #include <string.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
 #include "enum.h"
-#include "fifo.h"
 #include "struct.h"
 
 #define MAX_RETRIES 3
@@ -21,28 +22,101 @@ void sigpipe_handler(int signo){
 
 int fd;
 
-int openFifo(){
-    fd = open(FIFO, O_WRONLY|O_NONBLOCK);
-    if (fd == -1)
+void openConnection(char *serv_addr, int serv_port)
+{
+    struct sockaddr_in servaddr;
+
+    fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (fd < 0)
     {
-        if (errno == ENOENT || errno == ENXIO)
-        {
-            fprintf(stderr, "Server is not running. Please start server first.\n");
-        }
-        else
-        {
-            perror("open");
-        }
-        return 1;
+        perror("socket");
+        exit(1);
     }
-    return 0;
+    bzero(&servaddr, sizeof(servaddr));
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_port = htons(serv_port);
+    int rv = inet_pton(AF_INET, serv_addr, &servaddr.sin_addr);
+    if (rv == 0)
+    {
+        fprintf(stderr, "Invalid Server address\n");
+        exit(1);
+    }else if (rv < 0 ){
+        perror("inet_pton");
+        exit(1);
+    }
+    if (connect(fd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0)
+    {
+        perror("connect");
+        exit(1);
+    }
 }
 
-void closeFifo(){
+void closeConnection()
+{
     close(fd);
 }
 
-int writeToFifo(void *data, size_t size)
+void readFromSocket(){
+    ssize_t read_bytes;
+    Response res;
+    read_bytes = recv(fd, &res, sizeof(Response), MSG_WAITALL);
+    if (read_bytes < 0)
+    {
+        perror("recv");
+        exit(1);
+    }else if(read_bytes == 0){
+        fprintf(stderr, "Server closed the connection\n");
+        exit(1);
+    }
+    printResponse(res);
+}
+
+void printResponse(Response res){
+    switch (res)
+    {
+    case ADD_STUDENT_SUCCESS:
+        printf("Student added successfully\n");
+        break;
+    case ADD_STUDENT_FAILURE:
+        printf("Failed to add student\n");
+        break;
+    case MODIFY_STUDENT_SUCCESS:
+        printf("Student modified successfully\n");
+        break;
+    case MODIFY_STUDENT_FAILURE:
+        printf("Failed to modify student\n");
+        break;
+    case DELETE_STUDENT_SUCCESS:
+        printf("Student deleted successfully\n");
+        break;
+    case DELETE_STUDENT_FAILURE:
+        printf("Failed to delete student\n");
+        break;
+    case ADD_STUDENT_COURSE_SUCCESS:
+        printf("Student course added successfully\n");
+        break;
+    case ADD_STUDENT_COURSE_FAILURE:
+        printf("Failed to add student course\n");
+        break;
+    case MODIFY_STUDENT_COURSE_SUCCESS:
+        printf("Student course modified successfully\n");
+        break;
+    case MODIFY_STUDENT_COURSE_FAILURE:
+        printf("Failed to modify student course\n");
+        break;
+    case DELETE_STUDENT_COURSE_SUCCESS:
+        printf("Student course deleted successfully\n");
+        break;
+    case DELETE_STUDENT_COURSE_FAILURE:
+        printf("Failed to delete student course\n");
+        break;
+    default:
+        printf("Invalid response\n");
+        break;
+    }
+}
+
+int writeToSocket(void *data, size_t size)
 {
     ssize_t write_bytes;
     int retries = 0;
@@ -74,7 +148,7 @@ int writeToFifo(void *data, size_t size)
         }
         break;
     }
-
+    readFromSocket();
     return 0;
 }
 
@@ -85,12 +159,12 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects){
     data.CGPA = CGPA;
     data.numberOfSubjects = numberOfSubjects;
     Operation op = ADD_STUDNET;
-    if (writeToFifo(&op, sizeof(Operation)) != 0)
+    if (writeToSocket(&op, sizeof(Operation)) != 0)
     {
         return -1;
     }
 
-    if (writeToFifo(&data, sizeof(AddStudentData)) != 0)
+    if (writeToSocket(&data, sizeof(AddStudentData)) != 0)
     {
         return -1;
     }
@@ -106,12 +180,12 @@ int modifyStudent(int rollNumber, float CGPA)
 
     Operation op = MODIFY_STUDENT;
 
-    if (writeToFifo(&op, sizeof(Operation)) != 0)
+    if (writeToSocket(&op, sizeof(Operation)) != 0)
     {
         return -1;
     }
 
-    if (writeToFifo(&data, sizeof(ModifyStudentData)) != 0)
+    if (writeToSocket(&data, sizeof(ModifyStudentData)) != 0)
     {
         return -1;
     }
@@ -126,12 +200,12 @@ int deleteStudent(int rollNumber)
 
     Operation op = DELETE_STUDENT;
 
-    if (writeToFifo(&op, sizeof(Operation)) != 0)
+    if (writeToSocket(&op, sizeof(Operation)) != 0)
     {
         return -1;
     }
 
-    if (writeToFifo(&data, sizeof(DeleteStudentData)) != 0)
+    if (writeToSocket(&data, sizeof(DeleteStudentData)) != 0)
     {
         return -1;
     }
@@ -148,12 +222,12 @@ int addStudentCourse(int rollNumber, int courseCode, int marks)
 
     Operation op = ADD_STUDENT_COURSE;
 
-    if (writeToFifo(&op, sizeof(Operation)) != 0)
+    if (writeToSocket(&op, sizeof(Operation)) != 0)
     {
         return -1;
     }
 
-    if (writeToFifo(&data, sizeof(StudentCourseData)) != 0)
+    if (writeToSocket(&data, sizeof(StudentCourseData)) != 0)
     {
         return -1;
     }
@@ -170,12 +244,12 @@ int modifyStudentCourse(int rollNumber, int courseCode, int marks)
 
     Operation op = MODIFY_STUDENT_COURSE;
 
-    if (writeToFifo(&op, sizeof(Operation)) != 0)
+    if (writeToSocket(&op, sizeof(Operation)) != 0)
     {
         return -1;
     }
 
-    if (writeToFifo(&data, sizeof(StudentCourseData)) != 0)
+    if (writeToSocket(&data, sizeof(StudentCourseData)) != 0)
     {
         return -1;
     }
@@ -191,23 +265,12 @@ int deleteStudentCourse(int rollNumber, int courseCode)
 
     Operation op = DELETE_STUDENT_COURSE;
 
-    if (writeToFifo(&op, sizeof(Operation)) != 0)
+    if (writeToSocket(&op, sizeof(Operation)) != 0)
     {
         return -1;
     }
 
-    if (writeToFifo(&data, sizeof(StudentCourseData)) != 0)
-    {
-        return -1;
-    }
-
-    return 0;
-}
-
-int endConnection() {
-    Operation op = END_CONNECTION;
-
-    if (writeToFifo(&op, sizeof(Operation)) != 0)
+    if (writeToSocket(&data, sizeof(StudentCourseData)) != 0)
     {
         return -1;
     }
