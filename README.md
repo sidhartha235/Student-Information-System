@@ -25,12 +25,12 @@ Open 2 terminals in the project's directory.
 
 Run the following to start the server process:
 ```
-./server_08_19
+./server_08_19 <SERV_PORT>
 ```
 
 Run the following to start the client process:
 ```
-./client_08_19 -input <input_file>
+./client_08_19 <SERV_IP_ADDR> <SERV_PORT> -input <input_file>
 ```
 
 ## Handling SIGPIPE
