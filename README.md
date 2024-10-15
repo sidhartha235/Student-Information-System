@@ -14,48 +14,59 @@
     <li>You can check the end of the file 'logs.txt' to check if any errors or inconsistency is present in the Input file.</li>
 </ul>
 
-## Execution Steps using shell script:
-
-<ol>
-    <li>Run the shell script file: "<strong>run.sh</strong>"</li>
-    <ul>
-        <li>Bash: <br><em>./run.sh -input &lt;input_file_name&gt;</em></li>
-        <li>Git Bash: <br><em>sh run.sh -input &lt;input_file_name&gt;</em></li>
-    </ul>
-</ol>
-
-## Execution Steps using makefile:
+## Execution Steps:
 
 Run the makefile using the following command:
 ```
 make
 ```
 
+Open 2 terminals in the project's directory.
 
-Run the executable using the following commnad:
+Run the following to start the server process:
+```
+./server_08_19
+```
 
-### Windows
+Run the following to start the client process:
+```
+./client_08_19 -input <input_file>
+```
 
-.\2108_2119.exe -input <input_file>
+## Handling SIGPIPE
+
+When the client encounters a SIGPIPE it retries to write into the FIFO for MAX_RETRIES with RETRY_DELAY between each new write defined in client.c.
 
 
-For example to run with filename <b>input.txt</b>
+![Image](images/1.png)
 
-.\2108_2119.exe -input input.txt
+To reproduce make the following line changes in server.c
 
-
-### Linux
-
-./2108_2119 -input <input_file>
-
+![Image](images/2.png)
 
 
 ## Modules:
+
+### Client
+
+<ul>
+    <li>Store data passed by the parser into a structure.</li>
+    <li>Write the Operation and Data to a FIFO.</li>
+</ul>
 
 ### Parser
 
 <ul>
     <li>Parse the input file.</li>
+    <li>Pass the data to the client.</li>
+</ul>
+
+### Server
+
+<ul>
+    <li>Read and extract data from the FIFO.</li>
+    <li>Use the student and course modules to process the Student database information.</li>
+    <li>Use the writer module to generate the output and logs files.</li>
 </ul>
 
 ### Student

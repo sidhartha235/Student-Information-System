@@ -1,5 +1,6 @@
 #include "student.h"
 #include "writer.h"
+#include <string.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,7 +28,12 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
         }
 
         newStudent->student.rollNumber = rollNumber;
-        newStudent->student.name = name;
+        newStudent->student.name = (char *)malloc(strlen(name) + 1);
+        if (newStudent->student.name == NULL) {
+            fprintf(stderr, "Memory allocation failed\n");
+            exit(1);
+        }
+        strcpy(newStudent->student.name,name);
         newStudent->student.CGPA = CGPA;
         newStudent->student.numberOfSubjects = 0;
         newStudent->student.courseHead = NULL;

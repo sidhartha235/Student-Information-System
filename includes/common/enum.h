@@ -1,0 +1,15 @@
+#ifndef ENUM_H
+#define ENUM_H
+
+typedef enum
+{
+    ADD_STUDNET,
+    MODIFY_STUDENT,
+    DELETE_STUDENT,
+    ADD_STUDENT_COURSE,
+    MODIFY_STUDENT_COURSE,
+    DELETE_STUDENT_COURSE,
+    END_CONNECTION
+} Operation;
+
+#endif

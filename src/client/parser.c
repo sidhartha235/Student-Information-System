@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "student.h"
-#include "course.h"
+#include "client.h"
 
 #define MAX 100
 
@@ -84,12 +83,17 @@ void initParse(char *filename)
     }
 
     free(callType);
+    endConnection();
     closeFile(fp);
 }
 
 void initDBInfo(char* line,FILE* filePointer){
     int rollNumber;
     char* name = (char*)malloc(MAX);
+    if (name == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
     float CGPA;
     int numSubjects;
     sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects);
@@ -110,6 +114,10 @@ void initDBInfo(char* line,FILE* filePointer){
 void parseAddStudent(char* line){
     int rollNumber;
     char *name = (char *)malloc(MAX);
+    if (name == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
     float CGPA;
     int numSubjects;
     sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects);
