@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Memory allocation failed\n");
         exit(2);
     }
-    strcpy(serv_addr, argv[2]);
+    strcpy(serv_addr, argv[4]);
     if (strcmp(serv_addr, "") == 0)
     { // Other edge cases handled in inet_pton
         fprintf(stderr, "Invalid server address\n");
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     printf("Server address: %s\n", serv_addr);
     printf("Port: %d\n", port);
 
-    openConnection();
+    openConnection(serv_addr, port);
     initParse(inputFile);
     closeConnection();
 

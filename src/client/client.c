@@ -57,22 +57,8 @@ void closeConnection()
     close(fd);
 }
 
-void readFromSocket(){
-    ssize_t read_bytes;
-    Response res;
-    read_bytes = recv(fd, &res, sizeof(Response), MSG_WAITALL);
-    if (read_bytes < 0)
-    {
-        perror("recv");
-        exit(1);
-    }else if(read_bytes == 0){
-        fprintf(stderr, "Server closed the connection\n");
-        exit(1);
-    }
-    printResponse(res);
-}
-
-void printResponse(Response res){
+void printResponse(Response res)
+{
     switch (res)
     {
     case ADD_STUDENT_SUCCESS:
@@ -115,6 +101,21 @@ void printResponse(Response res){
         printf("Invalid response\n");
         break;
     }
+}
+
+void readFromSocket(){
+    ssize_t read_bytes;
+    Response res;
+    read_bytes = recv(fd, &res, sizeof(Response), MSG_WAITALL);
+    if (read_bytes < 0)
+    {
+        perror("recv");
+        exit(1);
+    }else if(read_bytes == 0){
+        fprintf(stderr, "Server closed the connection\n");
+        exit(1);
+    }
+    printResponse(res);
 }
 
 int writeToSocket(void *data, size_t size)
