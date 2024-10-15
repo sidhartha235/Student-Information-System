@@ -1,6 +1,6 @@
 #include "enum.h"
 
-void makeFifo();
-int openFifo();
-void readFromFifo();
+int initializeServer(uint16_t serv_port);
+void runServer(int listenfd);
+void stopServer(int listenfd);
 void extractData(Operation operation, void *data);

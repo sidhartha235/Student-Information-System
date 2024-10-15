@@ -13,13 +13,14 @@ int main(int argc, char *argv[])
         exit(2);
     }
     char *inputFile = (char *)malloc(strlen(argv[2]) + 1);
-    char *serv_addr = argv[4];
+    char *serv_addr = (char *)malloc(strlen(argv[4]) + 1);
     int port = atoi(argv[6]);
     if (inputFile == NULL)
     {
         fprintf(stderr, "Memory allocation failed\n");
         exit(2);
     }
+    strcpy(serv_addr, argv[2]);
     if (strcmp(serv_addr, "") == 0)
     { // Other edge cases handled in inet_pton
         fprintf(stderr, "Invalid server address\n");

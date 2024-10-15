@@ -35,7 +35,8 @@ void openConnection(char *serv_addr, int serv_port)
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(serv_port);
-    int rv = inet_pton(AF_INET, serv_addr, &servaddr.sin_addr);
+    printf("%s\n", serv_addr);
+    int rv = inet_pton(AF_INET, serv_addr, &servaddr.sin_addr.s_addr);
     if (rv == 0)
     {
         fprintf(stderr, "Invalid Server address\n");
