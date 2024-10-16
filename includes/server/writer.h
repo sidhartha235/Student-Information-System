@@ -1,7 +1,9 @@
 #ifndef FILE_WRITER
 #define FILE_WRITER
 
-int appendToFile(char* line, char* fileName);
+#include <stdio.h>
+
+int appendToFile(char* line, FILE *filePointer, int is_log);
 void initWrite(char *fileName);
 
 #endif

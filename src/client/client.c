@@ -35,7 +35,6 @@ void openConnection(char *serv_addr, int serv_port)
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(serv_port);
-    printf("%s\n", serv_addr);
     int rv = inet_pton(AF_INET, serv_addr, &servaddr.sin_addr.s_addr);
     if (rv == 0)
     {
@@ -150,7 +149,7 @@ int writeToSocket(void *data, size_t size)
         }
         break;
     }
-    readFromSocket();
+    // readFromSocket();
     return 0;
 }
 

@@ -20,7 +20,6 @@
 #include "writer.h"
 
 #define FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
-#define MAX 4096
 
 static void *handleClient(void *connfd);
 
@@ -70,6 +69,8 @@ void runServer(int listenfd) {
     pthread_t tid;
     int error_num;
 
+    char strptr[INET_ADDRSTRLEN];
+
     for ( ; ; ) {
         if ((connfd_ptr = malloc(sizeof(int))) == NULL) {
             perror("malloc");
@@ -81,8 +82,8 @@ void runServer(int listenfd) {
             exit(2);
         }
 
-        printf("Connection from client %s:%d\n", \
-                inet_ntop(AF_INET, &cliaddr.sin_addr, NULL, sizeof(cliaddr.sin_addr)), \
+        printf("\nConnection from client %s:%d\n", \
+                inet_ntop(AF_INET, &cliaddr.sin_addr, strptr, INET_ADDRSTRLEN), \
                 ntohs(cliaddr.sin_port));
 
         if ((error_num = pthread_create(&tid, NULL, &handleClient, connfd_ptr)) != 0) {
@@ -95,6 +96,7 @@ void runServer(int listenfd) {
 
 static void *handleClient(void *arg) {
     int connfd, error_num;
+    char *outputFile;
 
     connfd = *((int *) arg);
     free(arg);
@@ -107,143 +109,151 @@ static void *handleClient(void *arg) {
 
     /* handle client */
     printf("I am handling a client..\n");
-    printf("My Thread ID = %ld", pthread_self());
+    printf("My Thread ID = %ld\n", pthread_self());
     printf("Connection fd = %d\n", connfd);
+    updateDB(connfd);
 
-    if (close(connfd) == -1) {
-        perror("close");
+    outputFile = "2108_2119.out";
+    initWrite(outputFile);
+
+    if (shutdown(connfd, SHUT_WR) == -1) { /////////////
+        perror("shutdown");
         exit(1);
     }
 
     pthread_exit(NULL);
 }
-//     while (1) {
-//         Operation operation;
-//         void *data = NULL;
-//         read_bytes = read(fd, &operation, sizeof(operation));
 
-//         if (read_bytes < 0) {
-//             fprintf(stderr, "Error in reading from FIFO!\n");
-//             close(fd);
-//             exit(1);
-//         } else if (read_bytes == 0) {
-//             continue;
-//         } else {
-//             switch (operation) {
-//                 case ADD_STUDNET:
-//                     data = (AddStudentData *) malloc(sizeof(AddStudentData));
-//                     if (data == NULL) {
-//                         fprintf(stderr, "Memory allocation failed\n");
-//                         exit(1);
-//                     }
-//                     if ((read_bytes = read(fd, data, sizeof(AddStudentData))) < 0) {
-//                         fprintf(stderr, "Error in reading from FIFO!\n");
-//                         close(fd);
-//                         exit(1);
-//                     }
-//                     extractData(operation, data);
-//                     break;
-//                 case MODIFY_STUDENT:
-//                     data = (ModifyStudentData *) malloc(sizeof(ModifyStudentData));
-//                     if (data == NULL) {
-//                         fprintf(stderr, "Memory allocation failed\n");
-//                         exit(1);
-//                     }
-//                     if ((read_bytes = read(fd, data, sizeof(ModifyStudentData))) < 0) {
-//                         fprintf(stderr, "Error in reading from FIFO!\n");
-//                         close(fd);
-//                         exit(1);
-//                     }
-//                     extractData(operation, data);
-//                     break;
-//                 case DELETE_STUDENT:
-//                     data = (DeleteStudentData *) malloc(sizeof(DeleteStudentData));
-//                     if (data == NULL) {
-//                         fprintf(stderr, "Memory allocation failed\n");
-//                         exit(1);
-//                     }
-//                     if ((read_bytes = read(fd, data, sizeof(DeleteStudentData))) < 0) {
-//                         fprintf(stderr, "Error in reading from FIFO!\n");
-//                         close(fd);
-//                         exit(1);
-//                     }
-//                     extractData(operation, data);
-//                     break;
-//                 case ADD_STUDENT_COURSE:
-//                 case MODIFY_STUDENT_COURSE:
-//                 case DELETE_STUDENT_COURSE:
-//                     data = (StudentCourseData *) malloc(sizeof(StudentCourseData));
-//                     if (data == NULL) {
-//                         fprintf(stderr, "Memory allocation failed\n");
-//                         exit(1);
-//                     }
-//                     if ((read_bytes = read(fd, data, sizeof(StudentCourseData))) < 0) {
-//                         fprintf(stderr, "Error in reading from FIFO!\n");
-//                         close(fd);
-//                         exit(1);
-//                     }
-//                     extractData(operation, data);
-//                     break;
-//                 case END_CONNECTION:
-//                     char *outputFile = "2108_2119.out";
-//                     initWrite(outputFile);
-//                     break;
-//                 default:
-//                     fprintf(stderr, "Unknown operation!\n");
-//                     break;
-//             }
-//         }
+void updateDB(int connfd) {
+    Operation operation;
+    void *data;
+    ssize_t read_bytes, write_bytes;
 
-//         free(data);
-//     }
+    while ((read_bytes = recv(connfd, &operation, sizeof(operation), MSG_WAITALL)) != 0) {
+        if (read_bytes == -1) {
+            if (errno == EINTR) {
+                read_bytes = 0;
+                continue;
+            }
+            perror("recv");
+            exit(4);
+        }
 
-//     close(fd);
-// }
+        switch (operation) {
+            case ADD_STUDNET:
+                data = (AddStudentData *) malloc(sizeof(AddStudentData));
+                if (data == NULL) {
+                    fprintf(stderr, "Memory allocation failed\n");
+                    exit(1);
+                }
+                if ((read_bytes = recv(connfd, data, sizeof(AddStudentData), MSG_WAITALL)) == -1) {
+                    perror("recv");
+                    exit(4);
+                }
+                extractData(operation, data);
+                break;
 
-// void extractData(Operation operation, void *data) {
-//     switch (operation) {
-//         case ADD_STUDNET:
-//             AddStudentData *addStudentData = (AddStudentData *) data;
-//             // printf("%s\n", addStudentData->name);
-//             addStudent(addStudentData->rollNumber,
-//                        addStudentData->name,
-//                        addStudentData->CGPA,
-//                        addStudentData->numberOfSubjects);
-//             break;
+            case MODIFY_STUDENT:
+                data = (ModifyStudentData *) malloc(sizeof(ModifyStudentData));
+                if (data == NULL) {
+                    fprintf(stderr, "Memory allocation failed\n");
+                    exit(1);
+                }
+                if ((read_bytes = recv(connfd, data, sizeof(ModifyStudentData), MSG_WAITALL)) == -1) {
+                    perror("recv");
+                    exit(4);
+                }
+                extractData(operation, data);
+                break;
 
-//         case MODIFY_STUDENT:
-//             ModifyStudentData *modifyStudentData = (ModifyStudentData *) data;
-//             modifyStudent(modifyStudentData->rollNumber,
-//                           modifyStudentData->CGPA);
-//             break;
+            case DELETE_STUDENT:
+                data = (DeleteStudentData *) malloc(sizeof(DeleteStudentData));
+                if (data == NULL) {
+                    fprintf(stderr, "Memory allocation failed\n");
+                    exit(1);
+                }
+                if ((read_bytes = recv(connfd, data, sizeof(DeleteStudentData), MSG_WAITALL)) == -1) {
+                    perror("recv");
+                    exit(4);
+                }
+                extractData(operation, data);
+                break;
 
-//         case DELETE_STUDENT:
-//             DeleteStudentData *deleteStudentData = (DeleteStudentData *) data;
-//             deleteStudent(deleteStudentData->rollNumber);
-//             break;
+            case ADD_STUDENT_COURSE:
 
-//         case ADD_STUDENT_COURSE:
-//             StudentCourseData *addCourseData = (StudentCourseData *) data;
-//             addStudentCourse(addCourseData->rollNumber,
-//                              addCourseData->courseCode,
-//                              addCourseData->marks);
-//             break;
+            case MODIFY_STUDENT_COURSE:
 
-//         case MODIFY_STUDENT_COURSE:
-//             StudentCourseData *modifyCourseData = (StudentCourseData *) data;
-//             modifyStudentCourse(modifyCourseData->rollNumber,
-//                                 modifyCourseData->courseCode,
-//                                 modifyCourseData->marks);
-//             break;
+            case DELETE_STUDENT_COURSE:
+                data = (StudentCourseData *) malloc(sizeof(StudentCourseData));
+                if (data == NULL) {
+                    fprintf(stderr, "Memory allocation failed\n");
+                    exit(1);
+                }
+                if ((read_bytes = recv(connfd, data, sizeof(StudentCourseData), MSG_WAITALL)) == -1) {
+                    perror("recv");
+                    exit(4);
+                }
+                extractData(operation, data);
+                break;
 
-//         case DELETE_STUDENT_COURSE:
-//             StudentCourseData *deleteCourseData = (StudentCourseData *) data;
-//             deleteStudentCourse(deleteCourseData->rollNumber,
-//                                 deleteCourseData->courseCode);
-//             break;
+            default:
+                fprintf(stderr, "Unknown operation!\n");
+                break;
+        }
 
-//         default:
-//             fprintf(stderr, "Unknown operation!\n");
-//             break;
-//     }
-// }
+        free(data);
+    }
+}
+
+void extractData(Operation operation, void *data) {
+    AddStudentData *addStudentData;
+    ModifyStudentData *modifyStudentData;
+    DeleteStudentData *deleteStudentData;
+    StudentCourseData *courseData;
+
+    switch (operation) {
+        case ADD_STUDNET:
+            addStudentData = (AddStudentData *) data;
+            // printf("%s\n", addStudentData->name);
+            addStudent(addStudentData->rollNumber,
+                       addStudentData->name,
+                       addStudentData->CGPA,
+                       addStudentData->numberOfSubjects);
+            break;
+
+        case MODIFY_STUDENT:
+            modifyStudentData = (ModifyStudentData *) data;
+            modifyStudent(modifyStudentData->rollNumber,
+                          modifyStudentData->CGPA);
+            break;
+
+        case DELETE_STUDENT:
+            deleteStudentData = (DeleteStudentData *) data;
+            deleteStudent(deleteStudentData->rollNumber);
+            break;
+
+        case ADD_STUDENT_COURSE:
+            courseData = (StudentCourseData *) data;
+            addStudentCourse(courseData->rollNumber,
+                             courseData->courseCode,
+                             courseData->marks);
+            break;
+
+        case MODIFY_STUDENT_COURSE:
+            courseData = (StudentCourseData *) data;
+            modifyStudentCourse(courseData->rollNumber,
+                                courseData->courseCode,
+                                courseData->marks);
+            break;
+
+        case DELETE_STUDENT_COURSE:
+            courseData = (StudentCourseData *) data;
+            deleteStudentCourse(courseData->rollNumber,
+                                courseData->courseCode);
+            break;
+
+        default:
+            fprintf(stderr, "Unknown operation!\n");
+            break;
+    }
+}

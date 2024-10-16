@@ -15,7 +15,11 @@ int addStudentCourse(int rollNumber, int courseCode, int marks)
     {
         fprintf(stderr, "Error in AddCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in AddCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
-        appendToFile(logMessage, "logs.txt");
+        // if ((filePointer = fopen(fileName, "a")) == NULL) {
+        //     fprintf(stderr, "Failed to open the file: %s\n", fileName);
+        //     exit(1);
+        // }
+        // appendToFile(logMessage, "logs.txt", 1);
         return 0;
     }
     else
@@ -25,7 +29,7 @@ int addStudentCourse(int rollNumber, int courseCode, int marks)
         {
             fprintf(stderr, "Error in AddCourse: Course (%d) already exists for Roll Number (%d)\n", courseCode, rollNumber);
             sprintf(logMessage, "Error in AddCourse: Course (%d) already exists for Roll Number (%d)\n", courseCode, rollNumber);
-            appendToFile(logMessage, "logs.txt");
+            // appendToFile(logMessage, "logs.txt", 1);
             return 0;
         }
         else
@@ -53,7 +57,7 @@ int addStudentCourse(int rollNumber, int courseCode, int marks)
             studentNode->student.courseHead = newCourse;
 
             sprintf(logMessage, "Success: Course Added -> Roll Number - %d -- Course Code - %d\n", rollNumber, courseCode);
-            appendToFile(logMessage, "logs.txt");
+            // appendToFile(logMessage, "logs.txt", 1);
             return 1;
         }
     }
@@ -66,7 +70,7 @@ int modifyStudentCourse(int rollNumber, int courseCode, int marks)
     {
         fprintf(stderr, "Error in ModifyCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in ModifyCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
-        appendToFile(logMessage, "logs.txt");
+        // appendToFile(logMessage, "logs.txt", 1);
         return 0;
     }
     else
@@ -76,7 +80,7 @@ int modifyStudentCourse(int rollNumber, int courseCode, int marks)
         {
             fprintf(stderr, "Error in ModifyCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
             sprintf(logMessage, "Error in ModifyCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
-            appendToFile(logMessage, "logs.txt");
+            // appendToFile(logMessage, "logs.txt", 1);
             return 0;
         }
         else
@@ -84,7 +88,7 @@ int modifyStudentCourse(int rollNumber, int courseCode, int marks)
             modifyCourse->course.marks = marks;
 
             sprintf(logMessage, "Success: Course Modified -> Roll Number - %d -- Course Code - %d\n", rollNumber, courseCode);
-            appendToFile(logMessage, "logs.txt");
+            // appendToFile(logMessage, "logs.txt", 1);
             return 1;
         }
     }
@@ -97,7 +101,7 @@ int deleteStudentCourse(int rollNumber, int courseCode)
     {
         fprintf(stderr, "Error in DeleteCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in DeleteCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
-        appendToFile(logMessage, "logs.txt");
+        // appendToFile(logMessage, "logs.txt", 1);
         return 0;
     }
     else
@@ -107,7 +111,7 @@ int deleteStudentCourse(int rollNumber, int courseCode)
         {
             fprintf(stderr, "Error in DeleteCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
             sprintf(logMessage, "Error in DeleteCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
-            appendToFile(logMessage, "logs.txt");
+            // appendToFile(logMessage, "logs.txt", 1);
             return 0;
         }
         else
@@ -134,7 +138,7 @@ int deleteStudentCourse(int rollNumber, int courseCode)
 
             free(deleteCourse);
             sprintf(logMessage, "Success: Course Deleted -> Roll Number - %d -- Course Code - %d\n", rollNumber, courseCode);
-            appendToFile(logMessage, "logs.txt");
+            // appendToFile(logMessage, "logs.txt", 1);
             return 1;
         }
     }

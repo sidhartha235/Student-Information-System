@@ -15,7 +15,7 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
     {
         fprintf(stderr, "Error in AddStudent: Student already exists with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in AddStudent: Student already exists with Roll Number (%d)\n", rollNumber);
-        appendToFile(logMessage, "logs.txt");
+        // appendToFile(logMessage, "logs.txt", 1);
         return 0;
     }
     else
@@ -49,7 +49,7 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
         studentHead = newStudent;
 
         sprintf(logMessage, "Success: Student Added -> Roll Number - %d\n", rollNumber);
-        appendToFile(logMessage, "logs.txt");
+        // appendToFile(logMessage, "logs.txt", 1);
         return 1;
     }
 }
@@ -62,7 +62,7 @@ int modifyStudent(int rollNumber, float CGPA)
     {
         fprintf(stderr, "Error in ModifyStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in ModifyStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
-        appendToFile(logMessage, "logs.txt");
+        // appendToFile(logMessage, "logs.txt", 1);
         return 0;
     }
     else
@@ -70,7 +70,7 @@ int modifyStudent(int rollNumber, float CGPA)
         modifyStudent->student.CGPA = CGPA;
 
         sprintf(logMessage, "Success: Student Modified -> Roll Number - %d\n", rollNumber);
-        appendToFile(logMessage, "logs.txt");
+        // appendToFile(logMessage, "logs.txt", 1);
         return 1;
     }
 }
@@ -83,7 +83,7 @@ int deleteStudent(int rollNumber)
     {
         fprintf(stderr, "Error in DeleteStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in DeleteStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
-        appendToFile(logMessage, "logs.txt");
+        // appendToFile(logMessage, "logs.txt", 1);
         return 0;
     }
     else
@@ -108,7 +108,7 @@ int deleteStudent(int rollNumber)
 
         free(deleteStudent);
         sprintf(logMessage, "Success: Student Deleted -> Roll Number - %d\n", rollNumber);
-        appendToFile(logMessage, "logs.txt");
+        // appendToFile(logMessage, "logs.txt", 1);
         return 1;
     }
 }
