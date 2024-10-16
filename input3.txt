@@ -1,0 +1,9 @@
+# add student
+3, Blue, 5.9, 2
+# add course
+3, 560, 39
+3, 450, 42
+# add student
+4, Bruno, 7.9, 0
+3, James Bond, 5.9, 0
+5, Steve Richard, 7.1, 0

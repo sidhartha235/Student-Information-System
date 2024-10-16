@@ -95,7 +95,10 @@ void initDBInfo(char* line,FILE* filePointer){
     }
     float CGPA;
     int numSubjects;
-    sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects);
+    if(sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects) != 4){
+        fprintf(stderr, "Incorrect Input file\n");
+        exit(1);
+    }
     addStudent(rollNumber, name, CGPA, numSubjects);
     int index = 0;
     while (index < numSubjects && (line = fgets(line, MAX, filePointer)))
@@ -103,7 +106,10 @@ void initDBInfo(char* line,FILE* filePointer){
         if (sscanf(line,"%*c") != EOF){
             int courseCode;
             int marks;
-            sscanf(line,"%d, %d", &courseCode, &marks);
+           if(sscanf(line,"%d, %d", &courseCode, &marks) != 2){
+               fprintf(stderr, "Incorrect Input file\n");
+               exit(1);
+           }
             addStudentCourse(rollNumber, courseCode, marks);
             index++;
         }
@@ -119,7 +125,10 @@ void parseAddStudent(char* line){
     }
     float CGPA;
     int numSubjects;
-    sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects);
+    if(sscanf(line, "%d, %[^,], %f, %d", &rollNumber, name, &CGPA, &numSubjects) != 4){
+        fprintf(stderr, "Incorrect Input file\n");
+        exit(1);
+    }
     addStudent(rollNumber, name, CGPA, numSubjects);
 }
 
@@ -127,14 +136,20 @@ void parseAddCourse(char* line){
     int rollNumber;
     int courseCode;
     int marks;
-    sscanf(line, "%d, %d, %d", &rollNumber, &courseCode, &marks);
+    if(sscanf(line, "%d, %d, %d", &rollNumber, &courseCode, &marks) != 3){
+        fprintf(stderr, "Incorrect Input file\n");
+        exit(1);
+    }
     addStudentCourse(rollNumber, courseCode, marks);
 }
 
 void parseModifyStudent(char* line){
     int rollNumber;
     float CGPA;
-    sscanf(line,"%d, %f",&rollNumber, &CGPA);
+    if(sscanf(line,"%d, %f",&rollNumber, &CGPA) != 2){
+        fprintf(stderr, "Incorrect Input file\n");
+        exit(1);
+    }
     modifyStudent(rollNumber, CGPA);
 }
 
@@ -142,21 +157,30 @@ void parseModifyCourse(char* line){
     int rollNumber;
     int courseCode;
     int marks;
-    sscanf(line,"%d, %d, %d", &rollNumber, &courseCode, &marks);
+    if(sscanf(line,"%d, %d, %d", &rollNumber, &courseCode, &marks) != 3){
+        fprintf(stderr, "Incorrect Input file\n");
+        exit(1);
+    }
     modifyStudentCourse(rollNumber, courseCode, marks);
 }
 
 
 void parseDeleteStudent(char* line){
     int rollNumber;
-    sscanf(line,"%d", &rollNumber);
+    if(sscanf(line,"%d", &rollNumber) != 1){
+        fprintf(stderr, "Incorrect Input file\n");
+        exit(1);
+    }
     deleteStudent(rollNumber);
 }
 
 void parseDeleteCourse(char* line){
     int rollNumber;
     int courseCode;
-    sscanf(line,"%d, %d", &rollNumber, &courseCode);
+    if(sscanf(line,"%d, %d", &rollNumber, &courseCode) != 2){
+        fprintf(stderr, "Incorrect Input file\n");
+        exit(1);
+    }
     deleteStudentCourse(rollNumber, courseCode);
 }
 
@@ -165,7 +189,7 @@ FILE *openFile(char *filename)
     FILE *fp = fopen(filename, "r");
     if (fp == NULL)
     {
-        fprintf(stderr, "Failed to open file");
+        fprintf(stderr, "Failed to open file\n");
         exit(1);
     }
     return fp;

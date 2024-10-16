@@ -33,7 +33,7 @@ Run the following to start the server process:
 Run the following to start the client process:
 
 ```
-./client_08_19 -input <input_file> -addr <SERV_ADDR> -port <SERV_PORT>
+./client_08_19 <SERV_ADDR> <SERV_PORT> input <input_file>
 ```
 
 ## Handling SIGPIPE

@@ -107,8 +107,6 @@ static void *handleClient(void *arg) {
         exit(3);
     }
 
-    /* handle client */
-    printf("I am handling a client..\n");
     printf("My Thread ID = %ld\n", pthread_self());
     printf("Connection fd = %d\n", connfd);
     updateDB(connfd);
@@ -116,7 +114,7 @@ static void *handleClient(void *arg) {
     outputFile = "2108_2119.out";
     initWrite(outputFile);
 
-    if (shutdown(connfd, SHUT_WR) == -1) { /////////////
+    if (close(connfd) == -1) { 
         perror("shutdown");
         exit(1);
     }
@@ -127,7 +125,7 @@ static void *handleClient(void *arg) {
 void updateDB(int connfd) {
     Operation operation;
     void *data;
-    ssize_t read_bytes, write_bytes;
+    ssize_t read_bytes;
 
     while ((read_bytes = recv(connfd, &operation, sizeof(operation), MSG_WAITALL)) != 0) {
         if (read_bytes == -1) {

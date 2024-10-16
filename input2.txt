@@ -1,0 +1,17 @@
+# add student
+1, Sidhartha, 8.2, 5
+1, 560, 39
+1, 450, 58
+1, 620, 76
+1, 470, 49
+1, 520, 78
+# add student
+2, Srikar, 8.7, 3
+# add course
+2, 560, 45
+2, 450, 50
+2, 620, 60
+
+# modify student
+3, 8.99
+7, 7.77

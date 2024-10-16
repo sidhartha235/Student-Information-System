@@ -1,21 +1,3 @@
-# initial database
-1, Sidhartha, 8.2, 5
-560, 39
-450, 58
-620, 76
-470, 49
-520, 78
-2, Srikar, 8.7, 3
-560, 45
-450, 50
-620, 60
-3, Blue, 5.9, 2
-560, 39
-450, 42
-# add student
-4, Bruno, 7.9, 0
-3, James Bond, 5.9, 0
-5, Steve Richard, 7.1, 0
 
 # add course
 4, 520, 81
@@ -45,9 +27,6 @@
 3, 450, 86
 5, 120, 91
 
-# modify student
-3, 8.99
-7, 7.77
 
 # add course
 8, 120, 49
