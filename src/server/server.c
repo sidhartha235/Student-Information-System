@@ -121,7 +121,7 @@ static void *handleClient(void *arg) {
     initWrite(outputFile);
 
     if (close(connfd) == -1) { 
-        perror("shutdown");
+        perror("connfd");
         exit(1);
     }
 
@@ -133,7 +133,7 @@ void updateDB(int connfd) {
     void *data;
     ssize_t read_bytes;
 
-    while ((read_bytes = recv(connfd, &operation, sizeof(operation), MSG_WAITALL)) != EOF) {
+    while ((read_bytes = recv(connfd, &operation, sizeof(operation), MSG_WAITALL)) != 0) {
         if (read_bytes == -1) {
             if (errno == EINTR) {
                 read_bytes = 0;

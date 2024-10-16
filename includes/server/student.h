@@ -3,6 +3,8 @@
 
 #include "course.h"
 
+#include <pthread.h>
+
 typedef struct Student
 {
     int rollNumber;
@@ -22,12 +24,11 @@ typedef struct StudentNode
 extern StudentNode *studentHead;
 extern char logMessage[200];
 
+extern pthread_mutex_t mutex;
+
 int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects);
-
 int modifyStudent(int rollNumber, float CGPA);
-
 int deleteStudent(int rollNumber);
-
 StudentNode *searchStudent(int rollNumber);
 
 #endif

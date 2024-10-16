@@ -7,10 +7,13 @@
 
 StudentNode *studentHead = NULL;
 char logMessage[200];
+pthread_mutex_t mutex;
 
 int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
 {
     StudentNode *newStudent = searchStudent(rollNumber);
+    int error_num;
+
     if (newStudent != NULL)
     {
         fprintf(stderr, "Error in AddStudent: Student already exists with Roll Number (%d)\n", rollNumber);
@@ -41,12 +44,24 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
         newStudent->nextStudent = NULL;
         newStudent->previousStudent = NULL;
 
+        // acquire mutex lock
+        if ((error_num = pthread_mutex_lock(&mutex)) != 0) {
+            perror("pthread_mutex_lock");
+            exit(3);
+        }
+
         if (studentHead != NULL)
         {
             newStudent->nextStudent = studentHead;
             studentHead->previousStudent = newStudent;
         }
         studentHead = newStudent;
+        
+        // release mutex lock
+        if ((error_num = pthread_mutex_unlock(&mutex)) != 0) {
+            perror("pthread_mutex_unlock");
+            exit(3);
+        }
 
         sprintf(logMessage, "Success: Student Added -> Roll Number - %d\n", rollNumber);
         // appendToFile(logMessage, "logs.txt", 1);
@@ -57,7 +72,8 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
 int modifyStudent(int rollNumber, float CGPA)
 {
     StudentNode *modifyStudent = searchStudent(rollNumber);
-    char logMessage[100];
+    int error_num;
+
     if (modifyStudent == NULL)
     {
         fprintf(stderr, "Error in ModifyStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
@@ -67,7 +83,19 @@ int modifyStudent(int rollNumber, float CGPA)
     }
     else
     {
+        // acquire mutex lock
+        if ((error_num = pthread_mutex_lock(&mutex)) != 0) {
+            perror("pthread_mutex_lock");
+            exit(3);
+        }
+        
         modifyStudent->student.CGPA = CGPA;
+        
+        // release mutex lock
+        if ((error_num = pthread_mutex_unlock(&mutex)) != 0) {
+            perror("pthread_mutex_unlock");
+            exit(3);
+        }
 
         sprintf(logMessage, "Success: Student Modified -> Roll Number - %d\n", rollNumber);
         // appendToFile(logMessage, "logs.txt", 1);
@@ -78,7 +106,8 @@ int modifyStudent(int rollNumber, float CGPA)
 int deleteStudent(int rollNumber)
 {
     StudentNode *deleteStudent = searchStudent(rollNumber);
-    char logMessage[100];
+    int error_num;
+
     if (deleteStudent == NULL)
     {
         fprintf(stderr, "Error in DeleteStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
@@ -88,6 +117,12 @@ int deleteStudent(int rollNumber)
     }
     else
     {
+        // acquire mutex lock
+        if ((error_num = pthread_mutex_lock(&mutex)) != 0) {
+            perror("pthread_mutex_lock");
+            exit(3);
+        }
+        
         if (deleteStudent->previousStudent == NULL)
         {
             studentHead = deleteStudent->nextStudent;
@@ -104,6 +139,12 @@ int deleteStudent(int rollNumber)
         if (deleteStudent->nextStudent != NULL)
         {
             deleteStudent->nextStudent->previousStudent = deleteStudent->previousStudent;
+        }
+
+        // release mutex lock
+        if ((error_num = pthread_mutex_unlock(&mutex)) != 0) {
+            perror("pthread_mutex_unlock");
+            exit(3);
         }
 
         free(deleteStudent);
