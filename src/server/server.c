@@ -27,6 +27,7 @@ int initializeServer(uint16_t serv_port) {
     int listenfd;
     struct sockaddr_in servaddr;
     socklen_t servlen = sizeof(servaddr);
+    int optval = 1;
 
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
     if (listenfd == -1) {
@@ -34,10 +35,15 @@ int initializeServer(uint16_t serv_port) {
         exit(2);
     }
 
+    if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1) {
+        perror("setsockopt");
+        exit(2);
+    }
+
     memset(&servaddr, 0, servlen);
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = INADDR_ANY;
-    servaddr.sin_port = serv_port;
+    servaddr.sin_port = htons(serv_port);
 
     if (bind(listenfd, (struct sockaddr *) &servaddr, servlen) == -1) {
         perror("bind");
@@ -53,8 +59,8 @@ int initializeServer(uint16_t serv_port) {
 }
 
 void stopServer(int listenfd) {
-    if (shutdown(listenfd, SHUT_RDWR) == -1) {
-        perror("shutdown");
+    if (close(listenfd) == -1) {
+        perror("close");
         exit(1);
     }
     printf("Server is stopped!\n");
@@ -127,7 +133,7 @@ void updateDB(int connfd) {
     void *data;
     ssize_t read_bytes;
 
-    while ((read_bytes = recv(connfd, &operation, sizeof(operation), MSG_WAITALL)) != 0) {
+    while ((read_bytes = recv(connfd, &operation, sizeof(operation), MSG_WAITALL)) != EOF) {
         if (read_bytes == -1) {
             if (errno == EINTR) {
                 read_bytes = 0;

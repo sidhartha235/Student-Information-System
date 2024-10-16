@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    int listenfd = initializeServer(htons(serv_port));
+    int listenfd = initializeServer(serv_port);
     printf("Server started on port %d\n", serv_port);
     printf("Listening for connections...\n");
 
