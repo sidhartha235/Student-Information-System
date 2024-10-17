@@ -7,7 +7,7 @@
 
 StudentNode *studentHead = NULL;
 char logMessage[200];
-pthread_mutex_t mutex;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 Response addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
 {
