@@ -32,7 +32,7 @@ Run the following to start the server process:
 Run the following to start the client process:
 
 ```
-./client_08_19 <SERV_ADDR> <SERV_PORT> input <input_file>
+./client_08_19 <SERV_ADDR> <SERV_PORT> -input <input_file>
 ```
 
 
@@ -43,7 +43,7 @@ Run the following to start the client process:
 <ul>
     <li>Store data passed by the parser into a structure.</li>
     <li>Write the Operation and Data to a Socket and waits for response.</li>
-    <li>Client prints resposne to standard output</li>
+    <li>Client prints response to standard output</li>
 </ul>
 
 ### Parser
@@ -58,8 +58,9 @@ Run the following to start the client process:
 <ul>
     <li>Read and extract data from the Socket.</li>
     <li>Use the student and course modules to process the Student database information.</li>
+    <li>Server sends the response back after processing every request.</li>
     <li>Use the writer module to generate the output file.</li>
-    <li>Server writes into output file everytime a client disconnects</li>
+    <li>Server writes into output file everytime a client disconnects.</li>
 </ul>
 
 ### Student
