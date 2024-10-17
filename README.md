@@ -11,7 +11,6 @@
 
 <ul>
     <li>Student as well as respective Courses Information into a CSV file <strong>'2108_2119.out'</strong>.</li>
-    <li>You can check the end of the file 'logs.txt' to check if any errors or inconsistency is present in the Input file.</li>
 </ul>
 
 ## Execution Steps:
@@ -36,15 +35,6 @@ Run the following to start the client process:
 ./client_08_19 <SERV_ADDR> <SERV_PORT> input <input_file>
 ```
 
-## Handling SIGPIPE
-
-When the client encounters a SIGPIPE it retries to write into the FIFO for MAX_RETRIES with RETRY_DELAY between each new write defined in client.c.
-
-![Image](images/1.png)
-
-To reproduce make the following line changes in server.c
-
-![Image](images/2.png)
 
 ## Modules:
 
@@ -52,7 +42,8 @@ To reproduce make the following line changes in server.c
 
 <ul>
     <li>Store data passed by the parser into a structure.</li>
-    <li>Write the Operation and Data to a FIFO.</li>
+    <li>Write the Operation and Data to a Socket and waits for response.</li>
+    <li>Client prints resposne to standard output</li>
 </ul>
 
 ### Parser
@@ -65,9 +56,10 @@ To reproduce make the following line changes in server.c
 ### Server
 
 <ul>
-    <li>Read and extract data from the FIFO.</li>
+    <li>Read and extract data from the Socket.</li>
     <li>Use the student and course modules to process the Student database information.</li>
-    <li>Use the writer module to generate the output and logs files.</li>
+    <li>Use the writer module to generate the output file.</li>
+    <li>Server writes into output file everytime a client disconnects</li>
 </ul>
 
 ### Student
@@ -100,5 +92,5 @@ To reproduce make the following line changes in server.c
 ### Writer
 
 <ul>
-    <li>Write 'Data' and 'Logs' to output files.</li>
+    <li>Write 'Data' to output files.</li>
 </ul>

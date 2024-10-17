@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
     closeConnection();
 
     free(inputFile);
+    free(serv_addr);
 
     return 0;
 }
