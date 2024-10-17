@@ -1,3 +1,4 @@
 *.o
 .vscode/
 2108_2119.out
+output/*
