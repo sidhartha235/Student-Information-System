@@ -1,0 +1,16 @@
+# add student
+7, Alice, 7.5, 1
+# add course
+7, 450, 60
+# add student
+3, James Bond, 6.1, 0
+# modify course
+3, 450, 70
+# modify student
+6, 6.95
+# delete student
+2
+# add course
+5, 560, 85
+# delete course
+5, 560

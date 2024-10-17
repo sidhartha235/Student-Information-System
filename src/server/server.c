@@ -118,7 +118,20 @@ static void *handleClient(void *arg) {
     updateDB(connfd);
 
     outputFile = "2108_2119.out";
+
+    // acquire mutex lock
+    if ((error_num = pthread_mutex_lock(&mutex)) != 0) {
+        perror("pthread_mutex_lock");
+        exit(3);
+    }
+
     initWrite(outputFile);
+
+    // release mutex lock
+    if ((error_num = pthread_mutex_unlock(&mutex)) != 0) {
+        perror("pthread_mutex_unlock");
+        exit(3);
+    }
 
     if (close(connfd) == -1) { 
         perror("connfd");

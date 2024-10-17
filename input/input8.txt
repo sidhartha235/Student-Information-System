@@ -1,0 +1,15 @@
+# add student
+11, Mystique, 7.8, 2
+# add course
+11, 620, 67
+11, 520, 78
+# modify student
+10, 8.6
+# delete course
+11, 620
+# add course
+8, 620, 56
+# modify course
+8, 620, 58
+# delete student
+6

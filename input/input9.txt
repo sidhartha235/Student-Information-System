@@ -1,0 +1,13 @@
+# add student
+12, Magneto, 8.9, 3
+# add course
+12, 450, 80
+12, 520, 82
+# modify course
+12, 450, 88
+# delete course
+8, 120
+# modify student
+4, 8.0
+# delete student
+11

@@ -1,0 +1,15 @@
+# add student
+6, Jane Doe, 6.9, 2
+# add course
+6, 450, 55
+# modify student
+1, 8.5
+2, 9.1
+# modify course
+6, 450, 60
+# delete course
+4, 520
+# add course
+4, 620, 70
+# delete student
+3

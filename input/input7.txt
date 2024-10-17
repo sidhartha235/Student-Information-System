@@ -1,0 +1,14 @@
+# add student
+10, Wolverine, 8.4, 4
+# add course
+10, 450, 72
+10, 520, 85
+# modify student
+5, 7.4
+3, 6.5
+# delete student
+7
+# add course
+6, 620, 50
+# delete course
+10, 520

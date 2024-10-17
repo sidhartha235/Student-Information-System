@@ -1,0 +1,16 @@
+# add student
+9, Deadpool, 9.2, 3
+# add course
+9, 520, 92
+# modify course
+9, 520, 95
+# delete student
+4
+# modify student
+7, 7.9
+# add course
+7, 560, 55
+# delete course
+6, 450
+# delete student
+9

@@ -1,0 +1,14 @@
+# add student
+13, Professor X, 9.5, 4
+# add course
+13, 560, 90
+# modify course
+13, 560, 93
+# delete student
+5
+# modify student
+9, 9.1
+# delete course
+13, 560
+# add course
+6, 560, 62
