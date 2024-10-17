@@ -1,6 +1,8 @@
 #ifndef COURSES
 #define COURSES
 
+#include "enum.h"
+
 typedef struct Course {
     int courseCode;
     int marks;
@@ -12,10 +14,8 @@ typedef struct CourseNode {
     struct CourseNode* previousCourse;
 } CourseNode;
 
-int addStudentCourse(int rollNumber, int courseCode, int marks);
-
-int modifyStudentCourse(int rollNumber, int courseCode, int marks);
-
-int deleteStudentCourse(int rollNumber, int courseCode);
+Response addStudentCourse(int rollNumber, int courseCode, int marks);
+Response modifyStudentCourse(int rollNumber, int courseCode, int marks);
+Response deleteStudentCourse(int rollNumber, int courseCode);
 
 #endif

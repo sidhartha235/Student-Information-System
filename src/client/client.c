@@ -15,12 +15,35 @@
 #define RETRY_DELAY 5
 
 volatile sig_atomic_t flag = 0;
+int fd;
+
+const char *responseMessages[] = {
+    "Student added successfully",
+    "Failed to add student, student already exists",
+
+    "Student modified successfully",
+    "Failed to modify student, no such student",
+
+    "Student deleted successfully",
+    "Failed to delete student, no such student",
+
+    "Course added successfully",
+    "Failed to add course, no such student",
+    "Failed to add course, course already exists",
+
+    "Course modified successfully",
+    "Failed to modify course, no such student",
+    "Failed to modify course, no such course",
+
+    "Course deleted successfully",
+    "Failed to delete course, no such student",
+    "Failed to delete course, no such course"
+};
 
 void sigpipe_handler(int signo){
     flag = 1;
 }
 
-int fd;
 
 void openConnection(char *serv_addr, int serv_port)
 {
@@ -58,47 +81,11 @@ void closeConnection()
 
 void printResponse(Response res)
 {
-    switch (res)
-    {
-    case ADD_STUDENT_SUCCESS:
-        printf("Student added successfully\n");
-        break;
-    case ADD_STUDENT_FAILURE:
-        printf("Failed to add student\n");
-        break;
-    case MODIFY_STUDENT_SUCCESS:
-        printf("Student modified successfully\n");
-        break;
-    case MODIFY_STUDENT_FAILURE:
-        printf("Failed to modify student\n");
-        break;
-    case DELETE_STUDENT_SUCCESS:
-        printf("Student deleted successfully\n");
-        break;
-    case DELETE_STUDENT_FAILURE:
-        printf("Failed to delete student\n");
-        break;
-    case ADD_STUDENT_COURSE_SUCCESS:
-        printf("Student course added successfully\n");
-        break;
-    case ADD_STUDENT_COURSE_FAILURE:
-        printf("Failed to add student course\n");
-        break;
-    case MODIFY_STUDENT_COURSE_SUCCESS:
-        printf("Student course modified successfully\n");
-        break;
-    case MODIFY_STUDENT_COURSE_FAILURE:
-        printf("Failed to modify student course\n");
-        break;
-    case DELETE_STUDENT_COURSE_SUCCESS:
-        printf("Student course deleted successfully\n");
-        break;
-    case DELETE_STUDENT_COURSE_FAILURE:
-        printf("Failed to delete student course\n");
-        break;
-    default:
-        printf("Invalid response\n");
-        break;
+    // Check for valid enum range
+    if (res >= 0 && res < sizeof(responseMessages) / sizeof(responseMessages[0])) {
+        printf("%s\n", responseMessages[res]);
+    } else {
+        printf("Invalid response from server!\n");
     }
 }
 

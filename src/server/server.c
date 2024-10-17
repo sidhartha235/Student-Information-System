@@ -132,6 +132,7 @@ void updateDB(int connfd) {
     Operation operation;
     void *data;
     ssize_t read_bytes;
+    Response response;
 
     while ((read_bytes = recv(connfd, &operation, sizeof(operation), MSG_WAITALL)) != 0) {
         if (read_bytes == -1) {
@@ -142,6 +143,8 @@ void updateDB(int connfd) {
             perror("recv");
             exit(4);
         }
+
+        response = -1;
 
         switch (operation) {
             case ADD_STUDNET:
@@ -154,7 +157,7 @@ void updateDB(int connfd) {
                     perror("recv");
                     exit(4);
                 }
-                extractData(operation, data);
+                response = performOperationAndGetResponse(operation, data);
                 break;
 
             case MODIFY_STUDENT:
@@ -167,7 +170,7 @@ void updateDB(int connfd) {
                     perror("recv");
                     exit(4);
                 }
-                extractData(operation, data);
+                response = performOperationAndGetResponse(operation, data);
                 break;
 
             case DELETE_STUDENT:
@@ -180,7 +183,7 @@ void updateDB(int connfd) {
                     perror("recv");
                     exit(4);
                 }
-                extractData(operation, data);
+                response = performOperationAndGetResponse(operation, data);
                 break;
 
             case ADD_STUDENT_COURSE:
@@ -197,7 +200,7 @@ void updateDB(int connfd) {
                     perror("recv");
                     exit(4);
                 }
-                extractData(operation, data);
+                response = performOperationAndGetResponse(operation, data);
                 break;
 
             default:
@@ -205,59 +208,63 @@ void updateDB(int connfd) {
                 break;
         }
 
+        printf("%d\n", response);
         free(data);
     }
 }
 
-void extractData(Operation operation, void *data) {
+Response performOperationAndGetResponse(Operation operation, void *data) {
     AddStudentData *addStudentData;
     ModifyStudentData *modifyStudentData;
     DeleteStudentData *deleteStudentData;
     StudentCourseData *courseData;
+    Response response = -1;
 
     switch (operation) {
         case ADD_STUDNET:
             addStudentData = (AddStudentData *) data;
             // printf("%s\n", addStudentData->name);
-            addStudent(addStudentData->rollNumber,
-                       addStudentData->name,
-                       addStudentData->CGPA,
-                       addStudentData->numberOfSubjects);
+            response = addStudent(addStudentData->rollNumber,
+                                  addStudentData->name,
+                                  addStudentData->CGPA,
+                                  addStudentData->numberOfSubjects);
             break;
 
         case MODIFY_STUDENT:
             modifyStudentData = (ModifyStudentData *) data;
-            modifyStudent(modifyStudentData->rollNumber,
-                          modifyStudentData->CGPA);
+            response = modifyStudent(modifyStudentData->rollNumber,
+                                     modifyStudentData->CGPA);
             break;
 
         case DELETE_STUDENT:
             deleteStudentData = (DeleteStudentData *) data;
-            deleteStudent(deleteStudentData->rollNumber);
+            response = deleteStudent(deleteStudentData->rollNumber);
             break;
 
         case ADD_STUDENT_COURSE:
             courseData = (StudentCourseData *) data;
-            addStudentCourse(courseData->rollNumber,
-                             courseData->courseCode,
-                             courseData->marks);
+            response = addStudentCourse(courseData->rollNumber,
+                                        courseData->courseCode,
+                                        courseData->marks);
             break;
 
         case MODIFY_STUDENT_COURSE:
             courseData = (StudentCourseData *) data;
-            modifyStudentCourse(courseData->rollNumber,
-                                courseData->courseCode,
-                                courseData->marks);
+            response = modifyStudentCourse(courseData->rollNumber,
+                                           courseData->courseCode,
+                                           courseData->marks);
             break;
 
         case DELETE_STUDENT_COURSE:
             courseData = (StudentCourseData *) data;
-            deleteStudentCourse(courseData->rollNumber,
-                                courseData->courseCode);
+            response = deleteStudentCourse(courseData->rollNumber,
+                                           courseData->courseCode);
             break;
 
         default:
             fprintf(stderr, "Unknown operation!\n");
             break;
     }
+
+    return response;
 }

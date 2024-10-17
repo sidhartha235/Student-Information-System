@@ -8,7 +8,7 @@
 CourseNode *searchStudentCourse(CourseNode *courseHead, int courseCode);
 extern char logMessage[200];
 
-int addStudentCourse(int rollNumber, int courseCode, int marks)
+Response addStudentCourse(int rollNumber, int courseCode, int marks)
 {
     StudentNode *studentNode = searchStudent(rollNumber);
     int error_num;
@@ -17,12 +17,8 @@ int addStudentCourse(int rollNumber, int courseCode, int marks)
     {
         fprintf(stderr, "Error in AddCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in AddCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
-        // if ((filePointer = fopen(fileName, "a")) == NULL) {
-        //     fprintf(stderr, "Failed to open the file: %s\n", fileName);
-        //     exit(1);
-        // }
         // appendToFile(logMessage, "logs.txt", 1);
-        return 0;
+        return ADD_COURSE_FAIL_NO_STUDENT;
     }
     else
     {
@@ -32,7 +28,7 @@ int addStudentCourse(int rollNumber, int courseCode, int marks)
             fprintf(stderr, "Error in AddCourse: Course (%d) already exists for Roll Number (%d)\n", courseCode, rollNumber);
             sprintf(logMessage, "Error in AddCourse: Course (%d) already exists for Roll Number (%d)\n", courseCode, rollNumber);
             // appendToFile(logMessage, "logs.txt", 1);
-            return 0;
+            return ADD_COURSE_FAIL_COURSE_EXISTS;
         }
         else
         {
@@ -72,12 +68,12 @@ int addStudentCourse(int rollNumber, int courseCode, int marks)
 
             sprintf(logMessage, "Success: Course Added -> Roll Number - %d -- Course Code - %d\n", rollNumber, courseCode);
             // appendToFile(logMessage, "logs.txt", 1);
-            return 1;
+            return ADD_COURSE_SUCCESS;
         }
     }
 }
 
-int modifyStudentCourse(int rollNumber, int courseCode, int marks)
+Response modifyStudentCourse(int rollNumber, int courseCode, int marks)
 {
     StudentNode *studentNode = searchStudent(rollNumber);
     int error_num;
@@ -87,7 +83,7 @@ int modifyStudentCourse(int rollNumber, int courseCode, int marks)
         fprintf(stderr, "Error in ModifyCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in ModifyCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         // appendToFile(logMessage, "logs.txt", 1);
-        return 0;
+        return MODIFY_COURSE_FAIL_NO_STUDENT;
     }
     else
     {
@@ -97,7 +93,7 @@ int modifyStudentCourse(int rollNumber, int courseCode, int marks)
             fprintf(stderr, "Error in ModifyCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
             sprintf(logMessage, "Error in ModifyCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
             // appendToFile(logMessage, "logs.txt", 1);
-            return 0;
+            return MODIFY_COURSE_FAIL_NO_COURSE;
         }
         else
         {
@@ -117,12 +113,12 @@ int modifyStudentCourse(int rollNumber, int courseCode, int marks)
 
             sprintf(logMessage, "Success: Course Modified -> Roll Number - %d -- Course Code - %d\n", rollNumber, courseCode);
             // appendToFile(logMessage, "logs.txt", 1);
-            return 1;
+            return MODIFY_COURSE_SUCCESS;
         }
     }
 }
 
-int deleteStudentCourse(int rollNumber, int courseCode)
+Response deleteStudentCourse(int rollNumber, int courseCode)
 {
     StudentNode *studentNode = searchStudent(rollNumber);
     int error_num;
@@ -132,7 +128,7 @@ int deleteStudentCourse(int rollNumber, int courseCode)
         fprintf(stderr, "Error in DeleteCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in DeleteCourse: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         // appendToFile(logMessage, "logs.txt", 1);
-        return 0;
+        return DELETE_COURSE_FAIL_NO_STUDENT;
     }
     else
     {
@@ -142,7 +138,7 @@ int deleteStudentCourse(int rollNumber, int courseCode)
             fprintf(stderr, "Error in DeleteCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
             sprintf(logMessage, "Error in DeleteCourse: Course (%d) does NOT exist for Roll Number (%d)\n", courseCode, rollNumber);
             // appendToFile(logMessage, "logs.txt", 1);
-            return 0;
+            return DELETE_COURSE_FAIL_NO_COURSE;
         }
         else
         {
@@ -181,7 +177,7 @@ int deleteStudentCourse(int rollNumber, int courseCode)
             free(deleteCourse);
             sprintf(logMessage, "Success: Course Deleted -> Roll Number - %d -- Course Code - %d\n", rollNumber, courseCode);
             // appendToFile(logMessage, "logs.txt", 1);
-            return 1;
+            return DELETE_COURSE_SUCCESS;
         }
     }
 }

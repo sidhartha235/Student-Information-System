@@ -26,9 +26,9 @@ extern char logMessage[200];
 
 extern pthread_mutex_t mutex;
 
-int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects);
-int modifyStudent(int rollNumber, float CGPA);
-int deleteStudent(int rollNumber);
+Response addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects);
+Response modifyStudent(int rollNumber, float CGPA);
+Response deleteStudent(int rollNumber);
 StudentNode *searchStudent(int rollNumber);
 
 #endif

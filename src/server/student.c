@@ -9,7 +9,7 @@ StudentNode *studentHead = NULL;
 char logMessage[200];
 pthread_mutex_t mutex;
 
-int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
+Response addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
 {
     StudentNode *newStudent = searchStudent(rollNumber);
     int error_num;
@@ -19,7 +19,7 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
         fprintf(stderr, "Error in AddStudent: Student already exists with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in AddStudent: Student already exists with Roll Number (%d)\n", rollNumber);
         // appendToFile(logMessage, "logs.txt", 1);
-        return 0;
+        return ADD_STUDENT_FAIL_STUDENT_EXISTS;
     }
     else
     {
@@ -65,11 +65,11 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects)
 
         sprintf(logMessage, "Success: Student Added -> Roll Number - %d\n", rollNumber);
         // appendToFile(logMessage, "logs.txt", 1);
-        return 1;
+        return ADD_STUDENT_SUCCESS;
     }
 }
 
-int modifyStudent(int rollNumber, float CGPA)
+Response modifyStudent(int rollNumber, float CGPA)
 {
     StudentNode *modifyStudent = searchStudent(rollNumber);
     int error_num;
@@ -79,7 +79,7 @@ int modifyStudent(int rollNumber, float CGPA)
         fprintf(stderr, "Error in ModifyStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in ModifyStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         // appendToFile(logMessage, "logs.txt", 1);
-        return 0;
+        return MODIFY_STUDENT_FAIL_NO_STUDENT;
     }
     else
     {
@@ -99,11 +99,11 @@ int modifyStudent(int rollNumber, float CGPA)
 
         sprintf(logMessage, "Success: Student Modified -> Roll Number - %d\n", rollNumber);
         // appendToFile(logMessage, "logs.txt", 1);
-        return 1;
+        return MODIFY_STUDENT_SUCCESS;
     }
 }
 
-int deleteStudent(int rollNumber)
+Response deleteStudent(int rollNumber)
 {
     StudentNode *deleteStudent = searchStudent(rollNumber);
     int error_num;
@@ -113,7 +113,7 @@ int deleteStudent(int rollNumber)
         fprintf(stderr, "Error in DeleteStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         sprintf(logMessage, "Error in DeleteStudent: Student does NOT exist with Roll Number (%d)\n", rollNumber);
         // appendToFile(logMessage, "logs.txt", 1);
-        return 0;
+        return DELETE_STUDENT_FAIL_NO_STUDENT;
     }
     else
     {
@@ -150,7 +150,7 @@ int deleteStudent(int rollNumber)
         free(deleteStudent);
         sprintf(logMessage, "Success: Student Deleted -> Roll Number - %d\n", rollNumber);
         // appendToFile(logMessage, "logs.txt", 1);
-        return 1;
+        return DELETE_STUDENT_SUCCESS;
     }
 }
 
