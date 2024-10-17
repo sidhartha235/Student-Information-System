@@ -81,7 +81,6 @@ void closeConnection()
 
 void printResponse(Response res)
 {
-    // Check for valid enum range
     if (res >= 0 && res < sizeof(responseMessages) / sizeof(responseMessages[0])) {
         printf("%s\n", responseMessages[res]);
     } else {
@@ -114,7 +113,7 @@ int writeToSocket(void *data, size_t size)
         return -1;
     }
 
-    while (1){
+    while (1) {
         flag = 0;
         write_bytes = write(fd, data, size);
         if (write_bytes < 0)
@@ -136,7 +135,7 @@ int writeToSocket(void *data, size_t size)
         }
         break;
     }
-    // readFromSocket();
+    readFromSocket();
     return 0;
 }
 

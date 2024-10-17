@@ -131,10 +131,10 @@ static void *handleClient(void *arg) {
 void updateDB(int connfd) {
     Operation operation;
     void *data;
-    ssize_t read_bytes;
+    ssize_t read_bytes, write_bytes;
     Response response;
 
-    while ((read_bytes = recv(connfd, &operation, sizeof(operation), MSG_WAITALL)) != 0) {
+    while ((read_bytes = recv(connfd, &operation, sizeof(Operation), MSG_WAITALL)) != 0) {
         if (read_bytes == -1) {
             if (errno == EINTR) {
                 read_bytes = 0;
@@ -208,7 +208,11 @@ void updateDB(int connfd) {
                 break;
         }
 
-        printf("%d\n", response);
+
+        if ((write_bytes = send(connfd, &response, sizeof(Response), 0)) == -1) {
+            perror("send");
+            exit(4);
+        }
         free(data);
     }
 }
