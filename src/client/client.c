@@ -135,7 +135,6 @@ int writeToSocket(void *data, size_t size)
         }
         break;
     }
-    readFromSocket();
     return 0;
 }
 
@@ -155,6 +154,8 @@ int addStudent(int rollNumber, char *name, float CGPA, int numberOfSubjects){
     {
         return -1;
     }
+
+    readFromSocket();
 
     return 0;
 }
@@ -177,6 +178,8 @@ int modifyStudent(int rollNumber, float CGPA)
         return -1;
     }
 
+    readFromSocket();
+
     return 0;
 }
 
@@ -196,6 +199,8 @@ int deleteStudent(int rollNumber)
     {
         return -1;
     }
+
+    readFromSocket();
 
     return 0;
 }
@@ -219,6 +224,8 @@ int addStudentCourse(int rollNumber, int courseCode, int marks)
         return -1;
     }
 
+    readFromSocket();
+
     return 0;
 }
 
@@ -241,6 +248,8 @@ int modifyStudentCourse(int rollNumber, int courseCode, int marks)
         return -1;
     }
 
+    readFromSocket();
+
     return 0;
 }
 
@@ -261,6 +270,8 @@ int deleteStudentCourse(int rollNumber, int courseCode)
     {
         return -1;
     }
+
+    readFromSocket();
 
     return 0;
 }
