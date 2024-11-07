@@ -1,4 +1,5 @@
 *.o
 .vscode/
 2108_2119.out
+2108_2119_parallel.out
 output/*
