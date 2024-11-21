@@ -133,9 +133,9 @@ static void *handleClient(void *arg) {
         exit(3);
     }
 
-    if (close(connfd) == -1) { 
-        perror("connfd");
-        exit(1);
+    if (close(connfd) == -1) { /* fd's behaviour using close and shutdown */
+        perror("connfd"); /* check /proc/pid/fd/* and netstat -atn */
+        exit(1); /* on what's happening to the fd's ?????? */
     }
 
     pthread_exit(NULL);
